@@ -1,3 +1,5 @@
+#include <SFML/Graphics.hpp>
+
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif // !WIN32_LEAN_AND_MEAN
@@ -8,10 +10,27 @@
 #include <cassert>
 #include <cstdio>
 
-#pragma comment(lib, "ws2_32.lib")
-
 int main()
 {
+	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+	sf::CircleShape shape(100.f);
+	shape.setFillColor(sf::Color::Green);
+
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+
+		window.clear();
+		window.draw(shape);
+		window.display();
+	}
+
+
 	WSADATA wsaData;
 	int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	assert(result == 0);
