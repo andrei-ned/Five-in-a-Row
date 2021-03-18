@@ -1,14 +1,7 @@
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif // !WIN32_LEAN_AND_MEAN
-
-#include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <cassert>
 #include <cstdio>
-
-#pragma comment(lib, "ws2_32.lib")
 
 int main()
 {
@@ -23,7 +16,7 @@ int main()
 		.ai_protocol = IPPROTO_TCP
 	};
 
-	// Resolve serevr local address and port
+	// Resolve server local address and port
 	addrinfo* info;
 	result = getaddrinfo(nullptr, "8888", &hints, &info);
 	if (result != 0)
