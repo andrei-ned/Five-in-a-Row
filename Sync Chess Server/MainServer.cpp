@@ -47,8 +47,10 @@ int main()
 		return -1;
 	}
 
+
+	// start thread
 	// Listen for a single connection
-	result = listen(listen_socket, 1);
+	result = listen(listen_socket, 1024);
 	if (result == SOCKET_ERROR)
 	{
 		printf("bind() failed with error: %d\n", WSAGetLastError());
@@ -67,6 +69,8 @@ int main()
 		return -1;
 	}
 
+
+	// Thread this
 	const int buffer_size = 512;
 	char buffer[buffer_size];
 
@@ -76,7 +80,7 @@ int main()
 		result = recv(client_socket, buffer, buffer_size, 0);
 		if (result > 0)
 		{
-			printf("Received %d bytes: %s\n", strlen(buffer), buffer);
+			printf("Received %d bytes: %s\n", (int)strlen(buffer), buffer);
 
 			// Send back to client
 			result = send(client_socket, buffer, result, 0);

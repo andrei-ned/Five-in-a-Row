@@ -67,7 +67,7 @@ int main()
 		result = recv(connect_socket, buffer, buffer_size, 0);
 		if (result > 0)
 		{
-			printf("Received %d bytes: %s\n", strlen(buffer), buffer);
+			printf("Received %d bytes: %s\n", (int)strlen(buffer), buffer);
 		}
 		else if (result == 0)
 		{
