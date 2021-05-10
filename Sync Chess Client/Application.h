@@ -9,6 +9,8 @@ public:
 	~Application();
 	void run();
 private:
+	int handleServerConnection();
+
 	Game mGame;
 	sf::RenderWindow mWindow;
 };

@@ -3,6 +3,11 @@
 #include <cassert>
 #include <cstdio>
 
+int handleClientThread()
+{
+	return 0;
+}
+
 int main()
 {
 	WSADATA wsaData;
