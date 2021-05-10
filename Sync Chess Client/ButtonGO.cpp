@@ -1,13 +1,13 @@
-#include "Button.h"
+#include "ButtonGO.h"
 #include "SFML/Window.hpp"
 #include <iostream>
 
-void Button::update(const sf::Time& deltaTime)
+void ButtonGO::update(const sf::Time& deltaTime)
 {
 
 }
 
-void Button::render(sf::RenderWindow& window)
+void ButtonGO::render(sf::RenderWindow& window)
 {
 	if (mIsEnabled)
 	{
@@ -40,13 +40,13 @@ void Button::render(sf::RenderWindow& window)
 		switch (mState)
 		{
 		case ButtonState::Default:
-			mRectShape.setFillColor(mColorDefault);
+			mRectShape.setFillColor(mColors.normal);
 			break;
 		case ButtonState::Hovered:
-			mRectShape.setFillColor(mColorHovered);
+			mRectShape.setFillColor(mColors.hovered);
 			break;
 		case ButtonState::Pressed:
-			mRectShape.setFillColor(mColorPressed);
+			mRectShape.setFillColor(mColors.pressed);
 			break;
 		}
 	}
@@ -55,44 +55,60 @@ void Button::render(sf::RenderWindow& window)
 	window.draw(mText);
 }
 
-void Button::enable(const bool enabled)
+void ButtonGO::enable(const bool enabled)
 {
 	mState = ButtonState::Default;
 	mIsEnabled = enabled;
 }
 
-void Button::setPosition(const sf::Vector2f& pos)
+void ButtonGO::setPosition(const sf::Vector2f& pos)
 {
 	mRectShape.setPosition(pos);
 
 	repositionText();
 }
 
-void Button::setSize(const sf::Vector2f& size)
+void ButtonGO::setSize(const sf::Vector2f& size)
 {
 	mRectShape.setSize(size);
 
 	repositionText();
 }
 
-void Button::setTextFont(const sf::Font& font)
+void ButtonGO::setColors(const ButtonColors& colors)
+{
+	mColors = colors;
+	mRectShape.setOutlineColor(colors.outline);
+}
+
+void ButtonGO::setOutlineWidth(const float width)
+{
+	mRectShape.setOutlineThickness(width);
+}
+
+void ButtonGO::setTextFont(const sf::Font& font)
 {
 	mText.setFont(font);
 }
 
-void Button::setTextString(const sf::String& s)
+void ButtonGO::setTextString(const sf::String& s)
 {
 	mText.setString(s);
 
 	repositionText();
 }
 
-void Button::setTextColor(const sf::Color& color)
+void ButtonGO::setTextColor(const sf::Color& color)
 {
 	mText.setFillColor(color);
 }
 
-void Button::repositionText()
+void ButtonGO::setTextSize(const unsigned int size)
+{
+	mText.setCharacterSize(size);
+}
+
+void ButtonGO::repositionText()
 {
 	auto textRect = mText.getGlobalBounds();
 	auto shapeRect = mRectShape.getGlobalBounds();

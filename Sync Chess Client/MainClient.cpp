@@ -1,9 +1,9 @@
 #include "Application.h"
-
+#include "Constants.h"
 
 int main()
 {
-	Application app(600, 600);
+	Application app(Constants::windowWidth, Constants::windowHeight);
 	app.run();
 
 	return 0;

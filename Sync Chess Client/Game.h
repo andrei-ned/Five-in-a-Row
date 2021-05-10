@@ -1,7 +1,7 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include <string>
-#include "Button.h"
+#include "ButtonGO.h"
 #include "GameObject.h"
 #include "GameState.h"
 #include <unordered_map>
@@ -27,7 +27,7 @@ public:
 	void changeState();
 private:
 	// Buttons
-	Button mTestButton;
+	ButtonGO mTestButton;
 
 	// Assets
 	sf::Texture mBoardTexture;
@@ -36,13 +36,6 @@ private:
 	// Game States
 	std::unordered_map<std::type_index, std::unique_ptr<GameState>> mStates;
 	GameState* mpCurrentState;
-
-	// Sprites
-	sf::Sprite mBoardSprite;
-
-	std::vector<sf::Drawable*> mDrawables;
-
-	std::vector<GameObject*> mGameObjects;
 };
 
 template <class T>
