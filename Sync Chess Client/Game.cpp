@@ -2,6 +2,7 @@
 #include <cassert>
 #include "Constants.h"
 #include <iostream>
+#include "MenuState.h"
 
 Game::Game() {
 	// Load assets
@@ -13,6 +14,8 @@ Game::Game() {
 	{
 		assert(false);
 	}
+
+	changeState<MenuState>();
 
 	// Set up
 	mBoardSprite.setTexture(mBoardTexture);
@@ -32,6 +35,7 @@ Game::Game() {
 
 	mTestButton.setTextFont(mFont);
 	mTestButton.setTextString("Hello world");
+	mTestButton.enable(true);
 
 	mTestButton.mOnClick = [=]() { std::cout << "clickity\n"; };
 
@@ -41,35 +45,34 @@ Game::Game() {
 Game::~Game() {
 }
 
-void Game::update(const sf::Time& deltaTime) {
-	for (auto go : mGameObjects)
-	{
-		go->update(deltaTime);
-	}
+const sf::Font& Game::getFont() const
+{
+	return mFont;
+}
 
-	if (!mpCurrentState)
-		return;
-	if (mpCurrentState != mpDesiredState && mpDesiredState)
+void Game::update(const sf::Time& deltaTime) {
+	//for (auto go : mGameObjects)
+	//{
+	//	go->update(deltaTime);
+	//}
+
+	if (mpCurrentState)
 	{
-		if (mpCurrentState)
-			mpCurrentState->exit();
-		mpCurrentState = mpDesiredState;
-		mpCurrentState->enter();
+		mpCurrentState->update(deltaTime);
 	}
-	mpCurrentState->update(deltaTime);
 }
 
 void Game::render(sf::RenderWindow& window) {
-	for (auto drawable : mDrawables)
-	{
-		window.draw(*drawable);
-	}
+	//for (auto drawable : mDrawables)
+	//{
+	//	window.draw(*drawable);
+	//}
 
-	for (auto go : mGameObjects)
-	{
-		go->render(window);
-	}
-	//window.draw(mBoardSprite);
+	//for (auto go : mGameObjects)
+	//{
+	//	go->render(window);
+	//}
+	////window.draw(mBoardSprite);
 
 	if (mpCurrentState)
 	{

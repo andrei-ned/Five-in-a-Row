@@ -4,8 +4,7 @@
 
 void Button::update(const sf::Time& deltaTime)
 {
-	//std::cout << sf::Mouse::getPosition().x + " " << sf::Mouse::getPosition().y << std::endl;
-	//mRectShape.getGlobalBounds().contains(sf::Mouse::getPosition())
+
 }
 
 void Button::render(sf::RenderWindow& window)
@@ -51,7 +50,6 @@ void Button::render(sf::RenderWindow& window)
 			break;
 		}
 	}
-
 
 	window.draw(mRectShape);
 	window.draw(mText);

@@ -20,6 +20,8 @@ public:
 	// Draw things on screen, should be called every frame
 	void render(sf::RenderWindow& window);
 
+	const sf::Font& getFont() const;
+
 	// Change current state to T, create it if it doesn't exist
 	template <class T>
 	void changeState();
@@ -34,7 +36,6 @@ private:
 	// Game States
 	std::unordered_map<std::type_index, std::unique_ptr<GameState>> mStates;
 	GameState* mpCurrentState;
-	GameState* mpDesiredState;
 
 	// Sprites
 	sf::Sprite mBoardSprite;
@@ -47,18 +48,29 @@ private:
 template <class T>
 void Game::changeState()
 {
+	GameState* desiredState;
+
 	auto search = mStates.find(typeid(T));
 	if (search != mStates.end())
 	{
-		mpDesiredState = (*search).second.get();
+		desiredState = (*search).second.get();
 	}
 	else
 	{
+		// Create instance
 		auto upT = std::make_unique<T>(*this);
 		T* pT = upT.get();
 		mStates.insert({ typeid(T), std::move(upT) });
 
-		mpDesiredState = pT;
+		desiredState = pT;
+	}
+
+	if (desiredState != mpCurrentState)
+	{
+		if (mpCurrentState)
+			mpCurrentState->exit();
+		mpCurrentState = desiredState;
+		mpCurrentState->enter();
 	}
 }
 
