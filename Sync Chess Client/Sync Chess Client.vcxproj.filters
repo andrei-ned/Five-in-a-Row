@@ -51,6 +51,9 @@
     <ClCompile Include="TextGO.cpp">
       <Filter>Source Files\Game Objects</Filter>
     </ClCompile>
+    <ClCompile Include="PreConnectionState.cpp">
+      <Filter>Source Files\Game States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="TextGO.h">
       <Filter>Header Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="PreConnectionState.h">
+      <Filter>Header Files\Game States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@ public:
 	};
 
 	std::function<void()> mOnClick;
+	float textYOffset = -5.0f;
 
 	// GameObject
 	virtual void update(const sf::Time& deltaTime) override;

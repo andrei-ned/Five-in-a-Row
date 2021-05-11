@@ -3,11 +3,12 @@
 #include "MenuState.h"
 #include "ButtonGO.h"
 #include "TextGO.h"
-#include <iostream>
-
+#include "PreConnectionState.h"
 
 MenuState::MenuState(Game& game) : GameState(game)
 {
+	using namespace Constants;
+
 	// Title text
 	auto txt = std::make_unique<TextGO>();
 
@@ -20,8 +21,6 @@ MenuState::MenuState(Game& game) : GameState(game)
 	mGameObjects.push_back(std::move(txt));
 
 	// Button settings
-	ButtonGO::ButtonColors btnColors = { sf::Color::Green, sf::Color::Red, sf::Color::Blue };
-	sf::Vector2f btnSize(250.0f, 50.0f);
 	float btnX = (Constants::windowWidth - btnSize.x) * 0.5f;
 
 	// Play Button
@@ -31,7 +30,7 @@ MenuState::MenuState(Game& game) : GameState(game)
 	btnPlay->setTextFont(mpGame->getFont());
 	btnPlay->setPosition({ btnX,200.0f });
 	btnPlay->setTextString("Play");
-	btnPlay->mOnClick = [=]() { std::cout << "clickity\n"; };
+	btnPlay->mOnClick = [=]() { mpGame->changeState<PreConnectionState>(); };
 	mGameObjects.push_back(std::move(btnPlay));
 
 	// Quit Button
@@ -43,20 +42,4 @@ MenuState::MenuState(Game& game) : GameState(game)
 	btnQuit->setTextString("Quit");
 	btnQuit->mOnClick = [=]() { std::exit(EXIT_SUCCESS); };
 	mGameObjects.push_back(std::move(btnQuit));
-}
-
-void MenuState::update(const sf::Time& deltaTime)
-{
-	for (unsigned int i = 0; i < mGameObjects.size(); i++)
-	{
-		mGameObjects.at(i)->update(deltaTime);
-	}
-}
-
-void MenuState::render(sf::RenderWindow& window)
-{
-	for (unsigned int i = 0; i < mGameObjects.size(); i++)
-	{
-		mGameObjects.at(i)->render(window);
-	}
 }

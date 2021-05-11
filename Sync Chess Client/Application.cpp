@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <thread>
 #include <functional>
+#include "Constants.h"
 
 Application::Application(unsigned int windowWidth, unsigned int windowHeight)
 {
@@ -34,7 +35,7 @@ void Application::run() {
 		}
 
 		// Clear screen
-		mWindow.clear();
+		mWindow.clear(Constants::bgColor);
 
 		mGame.update(clock.restart());
 		mGame.render(mWindow);

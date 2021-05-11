@@ -162,6 +162,7 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="MainClient.cpp" />
     <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="PreConnectionState.cpp" />
     <ClCompile Include="TextGO.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +173,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MenuState.h" />
+    <ClInclude Include="PreConnectionState.h" />
     <ClInclude Include="TextGO.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

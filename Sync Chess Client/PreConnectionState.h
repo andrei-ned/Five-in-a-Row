@@ -2,9 +2,9 @@
 #include "GameState.h"
 #include "GameObject.h"
 
-class MenuState : public GameState
+class PreConnectionState : public GameState
 {
 public:
-	MenuState(Game&);
+	PreConnectionState(Game&);
 };
 

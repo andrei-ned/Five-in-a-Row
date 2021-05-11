@@ -114,8 +114,7 @@ void ButtonGO::repositionText()
 	auto shapeRect = mRectShape.getGlobalBounds();
 
 	float x = shapeRect.left + (shapeRect.width - textRect.width) * 0.5f;
-	float y = shapeRect.top + (shapeRect.height - textRect.height) * 0.5f;
-	y = shapeRect.top + shapeRect.height * 0.5f - textRect.height;
+	float y = shapeRect.top + (shapeRect.height - mText.getCharacterSize()) * 0.5f + textYOffset;
 
 	mText.setPosition({ x,y });
 }
