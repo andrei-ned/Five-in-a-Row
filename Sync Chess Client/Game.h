@@ -3,10 +3,12 @@
 #include <string>
 #include "ButtonGO.h"
 #include "GameObject.h"
-#include "GameState.h"
+#include "GameStateBase.h"
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
+#include <mutex>
+#include <iostream>
 
 class Game
 {
@@ -20,7 +22,12 @@ public:
 	// Draw things on screen, should be called every frame
 	void render(sf::RenderWindow& window);
 
+	void textEvent(const unsigned int unicode);
+
 	const sf::Font& getFont() const;
+
+	void startServerThread();
+	void endServerThread();
 
 	// Change current state to T, create it if it doesn't exist
 	template <class T>
@@ -34,14 +41,22 @@ private:
 	sf::Font mFont;
 
 	// Game States
-	std::unordered_map<std::type_index, std::unique_ptr<GameState>> mStates;
-	GameState* mpCurrentState;
+	std::unordered_map<std::type_index, std::unique_ptr<GameStateBase>> mStates;
+	GameStateBase* mpCurrentState;
+
+	std::mutex mStateMutex;
+
+
+	std::unique_ptr<std::thread> mServerThread;
+	std::atomic<bool> mConnectionFlag;
 };
 
 template <class T>
 void Game::changeState()
 {
-	GameState* desiredState;
+	std::lock_guard<std::mutex> lockGuard(mStateMutex);
+
+	GameStateBase* desiredState;
 
 	auto search = mStates.find(typeid(T));
 	if (search != mStates.end())

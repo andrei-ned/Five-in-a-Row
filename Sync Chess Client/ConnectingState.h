@@ -3,15 +3,14 @@
 #include "GameObject.h"
 #include "TextGO.h"
 
-class PreConnectionState : public GameStateBase
+class ConnectingState : public GameStateBase
 {
 public:
-	PreConnectionState(Game&);
+	ConnectingState(Game&);
 
 	void enter() override;
 	void render(sf::RenderWindow& window) override;
-	void textEvent(const unsigned int unicode) override;
 private:
-	TextGO mIpText;
+
 };
 

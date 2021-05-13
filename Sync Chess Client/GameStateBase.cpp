@@ -1,8 +1,8 @@
-#include "GameState.h"
+#include "GameStateBase.h"
 
-GameState::GameState(Game& game) : mpGame(&game) {}
+GameStateBase::GameStateBase(Game& game) : mpGame(&game) {}
 
-void GameState::update(const sf::Time& deltaTime)
+void GameStateBase::update(const sf::Time& deltaTime)
 {
 	for (unsigned int i = 0; i < mGameObjects.size(); i++)
 	{
@@ -10,7 +10,7 @@ void GameState::update(const sf::Time& deltaTime)
 	}
 }
 
-void GameState::render(sf::RenderWindow& window)
+void GameStateBase::render(sf::RenderWindow& window)
 {
 	for (unsigned int i = 0; i < mGameObjects.size(); i++)
 	{

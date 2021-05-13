@@ -157,22 +157,26 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ButtonGO.cpp" />
+    <ClCompile Include="ConnectingState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GameStateBase.cpp" />
     <ClCompile Include="MainClient.cpp" />
     <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="PreConnectionState.cpp" />
     <ClCompile Include="TextGO.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="ButtonGO.h" />
+    <ClInclude Include="ConnectingState.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GameStateBase.h" />
     <ClInclude Include="MenuState.h" />
+    <ClInclude Include="PlayState.h" />
     <ClInclude Include="PreConnectionState.h" />
     <ClInclude Include="TextGO.h" />
   </ItemGroup>

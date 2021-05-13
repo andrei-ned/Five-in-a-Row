@@ -5,7 +5,7 @@
 #include "TextGO.h"
 #include "PreConnectionState.h"
 
-MenuState::MenuState(Game& game) : GameState(game)
+MenuState::MenuState(Game& game) : GameStateBase(game)
 {
 	using namespace Constants;
 

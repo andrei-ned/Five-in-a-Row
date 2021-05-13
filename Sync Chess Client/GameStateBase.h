@@ -5,10 +5,10 @@
 class Game;
 
 // Base state that all other states inherit from
-class GameState
+class GameStateBase
 {
 public:
-	virtual ~GameState() {};
+	virtual ~GameStateBase() {};
 
 	// Called when entering the state
 	virtual void enter() {}
@@ -17,8 +17,9 @@ public:
 
 	virtual void update(const sf::Time& deltaTime);
 	virtual void render(sf::RenderWindow& window);
+	virtual void textEvent(const unsigned int unicode) {}
 protected:
-	GameState(Game& game);
+	GameStateBase(Game& game);
 
 	Game* mpGame;
 	std::vector<std::unique_ptr<GameObject>> mGameObjects;

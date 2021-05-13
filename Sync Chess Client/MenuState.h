@@ -1,8 +1,8 @@
 #pragma once
-#include "GameState.h"
+#include "GameStateBase.h"
 #include "GameObject.h"
 
-class MenuState : public GameState
+class MenuState : public GameStateBase
 {
 public:
 	MenuState(Game&);

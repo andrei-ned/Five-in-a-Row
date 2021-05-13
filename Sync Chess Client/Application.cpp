@@ -6,6 +6,7 @@
 #include <thread>
 #include <functional>
 #include "Constants.h"
+#include <iostream>
 
 Application::Application(unsigned int windowWidth, unsigned int windowHeight)
 {
@@ -18,8 +19,8 @@ Application::~Application()
 }
 
 void Application::run() {
-	auto callback = std::bind(&Application::handleServerConnection, this);
-	std::thread serverThread(callback);
+	//auto callback = std::bind(&Application::handleServerConnection, this);
+	//std::thread serverThread(callback);
 
 	// Start the game loop 
 	sf::Clock clock;
@@ -32,6 +33,10 @@ void Application::run() {
 			// Close window: exit
 			if (event.type == sf::Event::Closed)
 				mWindow.close();
+			if (event.type == sf::Event::TextEntered)
+			{
+				std::cout << event.text.unicode << " - " << static_cast<char>(event.text.unicode) << std::endl;
+			}
 		}
 
 		// Clear screen
@@ -44,7 +49,7 @@ void Application::run() {
 		mWindow.display();
 	}
 
-	serverThread.join();
+	//serverThread.join();
 }
 
 int Application::handleServerConnection() {
@@ -105,7 +110,7 @@ int Application::handleServerConnection() {
 		result = recv(connect_socket, buffer, buffer_size, 0);
 		if (result > 0)
 		{
-			//printf("Received %d bytes: %s\n", (int)strlen(buffer), buffer);
+			printf("Received %d bytes: %s\n", (int)strlen(buffer), buffer);
 		}
 		else if (result == 0)
 		{
