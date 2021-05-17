@@ -7,6 +7,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sync Chess Client", "Sync C
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sync Chess Server", "Sync Chess Server\Sync Chess Server.vcxproj", "{E9821A8E-7F72-4596-9A30-224CC70D8BBC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{60CEFA96-1673-4A06-A9D5-7429821C8898}"
+	ProjectSection(SolutionItems) = preProject
+		x64\Debug\Sync Chess Client.exe = x64\Debug\Sync Chess Client.exe
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

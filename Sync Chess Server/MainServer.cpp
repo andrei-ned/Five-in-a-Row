@@ -2,9 +2,43 @@
 #include <ws2tcpip.h>
 #include <cassert>
 #include <cstdio>
+#include <thread>
+#include <vector>
 
-int handleClientThread()
+int handleClientThread(SOCKET client_socket)
 {
+	int result;
+
+	const int buffer_size = 512;
+	char buffer[buffer_size];
+
+	do
+	{
+		// Wait for client to send some data
+		result = recv(client_socket, buffer, buffer_size, 0);
+		if (result > 0)
+		{
+			printf("Received %d bytes: %s\n", (int)strlen(buffer), buffer);
+
+			// Send back to client
+			result = send(client_socket, buffer, result, 0);
+			if (result == SOCKET_ERROR)
+			{
+				printf("send() failed with error: %d\n", WSAGetLastError());
+			}
+		}
+		else if (result == 0)
+		{
+			printf("Connection to client closing...\n");
+		}
+		else
+		{
+			printf("recv() failed with error: %d\n", WSAGetLastError());
+		}
+	} while (result > 0);
+
+	//closesocket(listen_socket);
+	//WSACleanup();
 	return 0;
 }
 
@@ -52,20 +86,33 @@ int main()
 		return -1;
 	}
 
-
-	// start thread
-	// Listen for a single connection
+	// Listen for connection
 	result = listen(listen_socket, 1024);
 	if (result == SOCKET_ERROR)
 	{
-		printf("bind() failed with error: %d\n", WSAGetLastError());
+		printf("listen failed with error: %d\n", WSAGetLastError());
 		closesocket(listen_socket);
 		WSACleanup();
 		return -1;
 	}
 
+	std::vector<std::thread> threads;
+
 	// Accept a client socket
-	SOCKET client_socket = accept(listen_socket, nullptr, nullptr);
+	SOCKET client_socket;
+	while (client_socket = accept(listen_socket, nullptr, nullptr))
+	{
+		if (client_socket == INVALID_SOCKET)
+		{
+			printf("accept() failed with error: %d\n", WSAGetLastError());
+			//closesocket(listen_socket);
+			//WSACleanup();
+			continue;
+		}
+		printf("uwu\n");
+		threads.push_back(std::thread(handleClientThread, client_socket));
+	}
+
 	if (client_socket == INVALID_SOCKET)
 	{
 		printf("accept() failed with errror: %d\n", WSAGetLastError());
@@ -74,8 +121,6 @@ int main()
 		return -1;
 	}
 
-
-	// Thread this
 	const int buffer_size = 512;
 	char buffer[buffer_size];
 

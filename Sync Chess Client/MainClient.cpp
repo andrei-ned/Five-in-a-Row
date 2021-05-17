@@ -1,10 +1,42 @@
-#include "Application.h"
 #include "Constants.h"
+#include "Game.h"
+#include "SFML/Graphics.hpp"
 
 int main()
 {
-	Application app(Constants::windowWidth, Constants::windowHeight);
-	app.run();
+	//Application app(Constants::windowWidth, Constants::windowHeight);
+	//app.run();
+	Game game;
+	sf::RenderWindow window;
+
+	window.create(sf::VideoMode(Constants::windowWidth, Constants::windowHeight), "Title", sf::Style::Titlebar | sf::Style::Close);
+
+	// Start the game loop 
+	sf::Clock clock;
+	while (window.isOpen())
+	{
+		// Process events
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			// Close window: exit
+			if (event.type == sf::Event::Closed)
+				window.close();
+			if (event.type == sf::Event::TextEntered)
+			{
+				std::cout << event.text.unicode << " - " << static_cast<char>(event.text.unicode) << std::endl;
+			}
+		}
+
+		// Clear screen
+		window.clear(Constants::bgColor);
+
+		game.update(clock.restart());
+		game.render(window);
+
+		// Update the window
+		window.display();
+	}
 
 	return 0;
 }
