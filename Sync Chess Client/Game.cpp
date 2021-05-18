@@ -106,6 +106,7 @@ void Game::startServerThread()
 				return -1;
 			}
 
+			// #== CLIENT ONLY ==##
 			result = connect(connect_socket, info->ai_addr, (int)info->ai_addrlen);
 			freeaddrinfo(info);
 			if (connect_socket == SOCKET_ERROR)
@@ -115,6 +116,7 @@ void Game::startServerThread()
 				WSACleanup();
 				return -1;
 			}
+			// #====##
 
 			const int buffer_size = 512;
 			char buffer[buffer_size];

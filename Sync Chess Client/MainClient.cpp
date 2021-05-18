@@ -4,8 +4,6 @@
 
 int main()
 {
-	//Application app(Constants::windowWidth, Constants::windowHeight);
-	//app.run();
 	Game game;
 	sf::RenderWindow window;
 

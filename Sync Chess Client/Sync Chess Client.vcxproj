@@ -155,6 +155,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Shared\Connection.cpp" />
+    <ClCompile Include="..\Shared\Message.cpp" />
     <ClCompile Include="ButtonGO.cpp" />
     <ClCompile Include="ConnectingState.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -167,6 +169,8 @@
     <ClCompile Include="TextGO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Shared\Connection.h" />
+    <ClInclude Include="..\Shared\Message.h" />
     <ClInclude Include="ButtonGO.h" />
     <ClInclude Include="ConnectingState.h" />
     <ClInclude Include="Constants.h" />

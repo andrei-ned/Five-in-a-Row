@@ -75,6 +75,7 @@ int main()
 		return -1;
 	}
 
+	// #== SERVER ONLY ==##
 	// Setup TCP listening socket
 	result = bind(listen_socket, info->ai_addr, (int)info->ai_addrlen);
 	if (result == SOCKET_ERROR)
@@ -95,6 +96,7 @@ int main()
 		WSACleanup();
 		return -1;
 	}
+	// #====##
 
 	std::vector<std::thread> threads;
 

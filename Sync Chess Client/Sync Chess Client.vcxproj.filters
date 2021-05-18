@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Game Objects">
       <UniqueIdentifier>{c934b340-0ba4-4960-980d-d40251c8d82a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shared">
+      <UniqueIdentifier>{06757366-51e4-4860-8b75-23b1abee5f8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared">
+      <UniqueIdentifier>{e5218124-19c9-48d7-9e97-280ed8617aaa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainClient.cpp">
@@ -57,6 +63,12 @@
     <ClCompile Include="PlayState.cpp">
       <Filter>Source Files\Game States</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\Message.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Connection.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -88,6 +100,12 @@
     </ClInclude>
     <ClInclude Include="PlayState.h">
       <Filter>Header Files\Game States</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Message.h">
+      <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Connection.h">
+      <Filter>Header Files\Shared</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
