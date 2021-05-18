@@ -39,7 +39,7 @@ PreConnectionState::PreConnectionState(Game& game) : GameStateBase(game)
 
 void PreConnectionState::enter()
 {
-	mpGame->endServerThread();
+	mpGame->closeConnection();
 }
 
 void PreConnectionState::textEvent(const unsigned int unicode)

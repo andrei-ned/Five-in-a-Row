@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>SFML_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SFML-2.5.1-32\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SFML-2.5.1-32\include;$(SolutionDir)\Shared</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,7 +107,7 @@
       <PreprocessorDefinitions>SFML_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SFML-2.5.1-32\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SFML-2.5.1-32\include;$(SolutionDir)\Shared</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,7 +125,7 @@
       <PreprocessorDefinitions>SFML_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SFML-2.5.1-64\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SFML-2.5.1-64\include;$(SolutionDir)\Shared</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,7 +143,7 @@
       <PreprocessorDefinitions>SFML_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SFML-2.5.1-64\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SFML-2.5.1-64\include;$(SolutionDir)\Shared</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,11 +159,13 @@
     <ClCompile Include="..\Shared\Message.cpp" />
     <ClCompile Include="ButtonGO.cpp" />
     <ClCompile Include="ConnectingState.cpp" />
+    <ClCompile Include="ConnectionLostState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameStateBase.cpp" />
     <ClCompile Include="MainClient.cpp" />
     <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="OpponentDisconnectState.cpp" />
     <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="PreConnectionState.cpp" />
     <ClCompile Include="TextGO.cpp" />
@@ -173,11 +175,13 @@
     <ClInclude Include="..\Shared\Message.h" />
     <ClInclude Include="ButtonGO.h" />
     <ClInclude Include="ConnectingState.h" />
+    <ClInclude Include="ConnectionLostState.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameStateBase.h" />
     <ClInclude Include="MenuState.h" />
+    <ClInclude Include="OpponentDisconnectState.h" />
     <ClInclude Include="PlayState.h" />
     <ClInclude Include="PreConnectionState.h" />
     <ClInclude Include="TextGO.h" />

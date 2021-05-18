@@ -69,6 +69,12 @@
     <ClCompile Include="..\Shared\Connection.cpp">
       <Filter>Source Files\Shared</Filter>
     </ClCompile>
+    <ClCompile Include="ConnectionLostState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpponentDisconnectState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -106,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="..\Shared\Connection.h">
       <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectionLostState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpponentDisconnectState.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

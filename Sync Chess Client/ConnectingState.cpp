@@ -26,6 +26,7 @@ ConnectingState::ConnectingState(Game& game) : GameStateBase(game)
 	auto txt = std::make_unique<TextGO>();
 	txt->mText.setString("Connecting to server...");
 	txt->mText.setPosition({ btnX, 100.0f });
+	mGameObjects.push_back(std::move(txt));
 
 	//mpGame->ptrTestThread = std::make_unique<std::thread>([]() {
 	//	std::cout << "yoyoyo\n";
@@ -34,7 +35,7 @@ ConnectingState::ConnectingState(Game& game) : GameStateBase(game)
 
 void ConnectingState::enter()
 {
-	mpGame->startServerThread();
+	mpGame->startConnection();
 }
 
 void ConnectingState::render(sf::RenderWindow& window)

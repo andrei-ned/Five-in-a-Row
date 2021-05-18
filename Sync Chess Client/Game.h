@@ -9,6 +9,10 @@
 #include <memory>
 #include <mutex>
 #include <iostream>
+#include "Connection.h"
+
+#include <winsock2.h>
+#include <ws2tcpip.h>
 
 class Game
 {
@@ -26,12 +30,14 @@ public:
 
 	const sf::Font& getFont() const;
 
-	void startServerThread();
-	void endServerThread();
+	void startConnection();
+	void closeConnection();
 
 	// Change current state to T, create it if it doesn't exist
 	template <class T>
 	void changeState();
+
+	std::unique_ptr<Connection> mConnection;
 private:
 	// Buttons
 	ButtonGO mTestButton;
@@ -49,6 +55,8 @@ private:
 
 	std::unique_ptr<std::thread> mServerThread;
 	std::atomic<bool> mConnectionFlag;
+
+	SOCKET connect_socket;
 };
 
 template <class T>

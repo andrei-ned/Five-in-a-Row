@@ -4,43 +4,7 @@
 #include <cstdio>
 #include <thread>
 #include <vector>
-
-int handleClientThread(SOCKET client_socket)
-{
-	int result;
-
-	const int buffer_size = 512;
-	char buffer[buffer_size];
-
-	do
-	{
-		// Wait for client to send some data
-		result = recv(client_socket, buffer, buffer_size, 0);
-		if (result > 0)
-		{
-			printf("Received %d bytes: %s\n", (int)strlen(buffer), buffer);
-
-			// Send back to client
-			result = send(client_socket, buffer, result, 0);
-			if (result == SOCKET_ERROR)
-			{
-				printf("send() failed with error: %d\n", WSAGetLastError());
-			}
-		}
-		else if (result == 0)
-		{
-			printf("Connection to client closing...\n");
-		}
-		else
-		{
-			printf("recv() failed with error: %d\n", WSAGetLastError());
-		}
-	} while (result > 0);
-
-	//closesocket(listen_socket);
-	//WSACleanup();
-	return 0;
-}
+#include "Connection.h"
 
 int main()
 {
@@ -75,7 +39,6 @@ int main()
 		return -1;
 	}
 
-	// #== SERVER ONLY ==##
 	// Setup TCP listening socket
 	result = bind(listen_socket, info->ai_addr, (int)info->ai_addrlen);
 	if (result == SOCKET_ERROR)
@@ -96,9 +59,9 @@ int main()
 		WSACleanup();
 		return -1;
 	}
-	// #====##
 
 	std::vector<std::thread> threads;
+	std::vector<std::unique_ptr<Connection>> connections;
 
 	// Accept a client socket
 	SOCKET client_socket;
@@ -111,47 +74,48 @@ int main()
 			//WSACleanup();
 			continue;
 		}
-		printf("uwu\n");
-		threads.push_back(std::thread(handleClientThread, client_socket));
+		printf("Started new connection\n");
+		//threads.push_back(std::thread(handleClientThread, client_socket));
+		connections.push_back(std::make_unique<Connection>(client_socket));
 	}
 
-	if (client_socket == INVALID_SOCKET)
-	{
-		printf("accept() failed with errror: %d\n", WSAGetLastError());
-		closesocket(listen_socket);
-		WSACleanup();
-		return -1;
-	}
+	//if (client_socket == INVALID_SOCKET)
+	//{
+	//	printf("accept() failed with errror: %d\n", WSAGetLastError());
+	//	closesocket(listen_socket);
+	//	WSACleanup();
+	//	return -1;
+	//}
 
-	const int buffer_size = 512;
-	char buffer[buffer_size];
+	//const int buffer_size = 512;
+	//char buffer[buffer_size];
 
-	do
-	{
-		// Wait for client to send some data
-		result = recv(client_socket, buffer, buffer_size, 0);
-		if (result > 0)
-		{
-			printf("Received %d bytes: %s\n", (int)strlen(buffer), buffer);
+	//do
+	//{
+	//	// Wait for client to send some data
+	//	result = recv(client_socket, buffer, buffer_size, 0);
+	//	if (result > 0)
+	//	{
+	//		printf("Received %d bytes: %s\n", (int)strlen(buffer), buffer);
 
-			// Send back to client
-			result = send(client_socket, buffer, result, 0);
-			if (result == SOCKET_ERROR)
-			{
-				printf("send() failed with error: %d\n", WSAGetLastError());
-			}
-		}
-		else if (result == 0)
-		{
-			printf("Connection to client closing...\n");
-		}
-		else
-		{
-			printf("recv() failed with error: %d\n", WSAGetLastError());
-		}
-	} while (result > 0);
+	//		// Send back to client
+	//		result = send(client_socket, buffer, result, 0);
+	//		if (result == SOCKET_ERROR)
+	//		{
+	//			printf("send() failed with error: %d\n", WSAGetLastError());
+	//		}
+	//	}
+	//	else if (result == 0)
+	//	{
+	//		printf("Connection to client closing...\n");
+	//	}
+	//	else
+	//	{
+	//		printf("recv() failed with error: %d\n", WSAGetLastError());
+	//	}
+	//} while (result > 0);
 
-	closesocket(listen_socket);
-	WSACleanup();
+	//closesocket(listen_socket);
+	//WSACleanup();
 	return 0;
 }
