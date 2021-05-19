@@ -5,6 +5,7 @@
 #include <thread>
 #include <vector>
 #include "Connection.h"
+#include "Match.h"
 
 int main()
 {
@@ -60,8 +61,10 @@ int main()
 		return -1;
 	}
 
-	std::vector<std::thread> threads;
 	std::vector<std::unique_ptr<Connection>> connections;
+
+	std::unique_ptr<Connection> connectionWaitingForMatch;
+	std::list<std::unique_ptr<Match>> matches;
 
 	// Accept a client socket
 	SOCKET client_socket;
@@ -70,52 +73,23 @@ int main()
 		if (client_socket == INVALID_SOCKET)
 		{
 			printf("accept() failed with error: %d\n", WSAGetLastError());
-			//closesocket(listen_socket);
-			//WSACleanup();
 			continue;
 		}
 		printf("Started new connection\n");
-		//threads.push_back(std::thread(handleClientThread, client_socket));
-		connections.push_back(std::make_unique<Connection>(client_socket));
+
+		if (connectionWaitingForMatch)
+		{
+			matches.push_back(std::make_unique<Match>(std::move(connectionWaitingForMatch), std::make_unique<Connection>(client_socket)));
+		}
+		else
+		{
+			connectionWaitingForMatch = std::make_unique<Connection>(client_socket);
+		}
+		//auto conn = std::make_unique<Connection>(client_socket);
+		//connections.push_back(std::move(conn));
+		////conn->mOnConnectionLost 
+		//connections.
 	}
 
-	//if (client_socket == INVALID_SOCKET)
-	//{
-	//	printf("accept() failed with errror: %d\n", WSAGetLastError());
-	//	closesocket(listen_socket);
-	//	WSACleanup();
-	//	return -1;
-	//}
-
-	//const int buffer_size = 512;
-	//char buffer[buffer_size];
-
-	//do
-	//{
-	//	// Wait for client to send some data
-	//	result = recv(client_socket, buffer, buffer_size, 0);
-	//	if (result > 0)
-	//	{
-	//		printf("Received %d bytes: %s\n", (int)strlen(buffer), buffer);
-
-	//		// Send back to client
-	//		result = send(client_socket, buffer, result, 0);
-	//		if (result == SOCKET_ERROR)
-	//		{
-	//			printf("send() failed with error: %d\n", WSAGetLastError());
-	//		}
-	//	}
-	//	else if (result == 0)
-	//	{
-	//		printf("Connection to client closing...\n");
-	//	}
-	//	else
-	//	{
-	//		printf("recv() failed with error: %d\n", WSAGetLastError());
-	//	}
-	//} while (result > 0);
-
-	//closesocket(listen_socket);
-	//WSACleanup();
 	return 0;
 }

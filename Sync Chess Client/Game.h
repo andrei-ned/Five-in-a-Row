@@ -52,11 +52,12 @@ private:
 
 	std::mutex mStateMutex;
 
-
-	std::unique_ptr<std::thread> mServerThread;
+	std::unique_ptr<std::thread> mCreateConnectionThread;
 	std::atomic<bool> mConnectionFlag;
 
-	SOCKET connect_socket;
+	SOCKET mConnectSocket;
+
+	void failedConnection();
 };
 
 template <class T>

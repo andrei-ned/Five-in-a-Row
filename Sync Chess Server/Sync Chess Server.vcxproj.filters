@@ -30,12 +30,21 @@
     <ClCompile Include="..\Shared\Connection.cpp">
       <Filter>Source Files\Shared</Filter>
     </ClCompile>
+    <ClCompile Include="Match.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Shared\Message.h">
       <Filter>Header Files\Shared</Filter>
     </ClInclude>
     <ClInclude Include="..\Shared\Connection.h">
+      <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Match.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\GameConstants.h">
       <Filter>Header Files\Shared</Filter>
     </ClInclude>
   </ItemGroup>

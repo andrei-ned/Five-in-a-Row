@@ -70,10 +70,10 @@
       <Filter>Source Files\Shared</Filter>
     </ClCompile>
     <ClCompile Include="ConnectionLostState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Game States</Filter>
     </ClCompile>
     <ClCompile Include="OpponentDisconnectState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Game States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,11 +113,14 @@
     <ClInclude Include="..\Shared\Connection.h">
       <Filter>Header Files\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="ConnectionLostState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OpponentDisconnectState.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Game States</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectionLostState.h">
+      <Filter>Header Files\Game States</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\GameConstants.h">
+      <Filter>Header Files\Shared</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

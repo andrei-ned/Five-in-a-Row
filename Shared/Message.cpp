@@ -6,7 +6,18 @@ Message::Message(const char* buf)
 	strcpy_s(mBuffer, sBufferSize, buf);
 }
 
+Message::Message(MessageType type)
+{
+	mBuffer[0] = static_cast<char>(type);
+	mBuffer[1] = 0;
+}
+
 const char* Message::getBuffer() const
 {
 	return mBuffer;
+}
+
+MessageType Message::getMessageType() const
+{
+	return static_cast<MessageType>(mBuffer[0]);
 }

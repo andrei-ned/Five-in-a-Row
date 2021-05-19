@@ -5,6 +5,7 @@
 #include "MenuState.h"
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#include "ConnectingState.h"
 
 Game::Game() /*: testThread(&Game::testFunc, this)*/ {
 	// Load assets
@@ -72,10 +73,10 @@ void Game::textEvent(const unsigned int unicode)
 
 void Game::startConnection()
 {
-	if (!mServerThread)
+	if (!mCreateConnectionThread)
 	{
 		mConnectionFlag = true;
-		mServerThread = std::make_unique<std::thread>([=]() {
+		mCreateConnectionThread = std::make_unique<std::thread>([=]() {
 			WSADATA wsaData;
 			int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
 			assert(result == 0);
@@ -93,16 +94,18 @@ void Game::startConnection()
 			{
 				printf("getaddrinfo() failed: %d\n", result);
 				WSACleanup();
+				failedConnection();
 				return -1;
 			}
 
 			// Create socket
-			connect_socket = socket(info->ai_family, info->ai_socktype, info->ai_protocol);
-			if (connect_socket == INVALID_SOCKET)
+			mConnectSocket = socket(info->ai_family, info->ai_socktype, info->ai_protocol);
+			if (mConnectSocket == INVALID_SOCKET)
 			{
 				printf("Unable to create server socket: %d\n", WSAGetLastError());
 				freeaddrinfo(info);
 				WSACleanup();
+				failedConnection();
 				return -1;
 			}
 
@@ -110,17 +113,20 @@ void Game::startConnection()
 			//u_long iMode = 1;
 			//result = ioctlsocket(connect_socket, FIONBIO, &iMode);
 
-			result = connect(connect_socket, info->ai_addr, (int)info->ai_addrlen);
+			result = connect(mConnectSocket, info->ai_addr, (int)info->ai_addrlen);
 			freeaddrinfo(info);
-			if (connect_socket == SOCKET_ERROR)
+			if (result == SOCKET_ERROR)
 			{
 				printf("Unable to connect to server.\n");
-				closesocket(connect_socket);
+				closesocket(mConnectSocket);
 				WSACleanup();
+				failedConnection();
 				return -1;
 			}
 
-			mConnection = std::make_unique<Connection>(connect_socket);
+			mConnection = std::make_unique<Connection>(mConnectSocket);
+			auto connState = dynamic_cast<ConnectingState*>(mpCurrentState);
+			connState->updateText("Waiting for opponent");
 			return 0;
 		});
 	}
@@ -128,15 +134,21 @@ void Game::startConnection()
 
 void Game::closeConnection()
 {
-	if (mServerThread)
+	if (mCreateConnectionThread)
 	{
-		closesocket(connect_socket);
+		closesocket(mConnectSocket);
 		mConnectionFlag = false;
-		mServerThread->join();
-		mServerThread.reset();
+		mCreateConnectionThread->join();
+		mCreateConnectionThread.reset();
 	}
 	if (mConnection)
 	{
 		mConnection.reset();
 	}
+}
+
+void Game::failedConnection()
+{
+	auto connState = dynamic_cast<ConnectingState*>(mpCurrentState);
+	connState->updateText("Failed to connect", false);
 }

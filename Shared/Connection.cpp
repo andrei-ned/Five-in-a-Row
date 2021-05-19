@@ -97,7 +97,7 @@ void Connection::recvMessages()
 			char* p = buffer;
 			do
 			{
-				int len = strlen(p) + 1;
+				unsigned int len = strlen(p) + 1;
 				mRecvQueue.push(p);
 				printf("Received msg of %d bytes: %s\n", len, p);
 				result -= len;

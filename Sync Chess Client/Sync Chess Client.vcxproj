@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Shared\Connection.h" />
+    <ClInclude Include="..\Shared\GameConstants.h" />
     <ClInclude Include="..\Shared\Message.h" />
     <ClInclude Include="ButtonGO.h" />
     <ClInclude Include="ConnectingState.h" />
