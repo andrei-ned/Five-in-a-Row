@@ -2,15 +2,17 @@
 
 enum class MessageType : char {
 	None = 0,
-	MatchStart = 'A'
+	MatchStart = 'A',
+	PlayerMove = 'B',
+	OpponentDisconnect = 'C'
 };
 
 class Message
 {
-	// TODO different msg types, byte array
 public:
 	Message(const char*);
 	Message(MessageType);
+	Message(MessageType, const char*);
 
 	const char* getBuffer() const;
 	MessageType getMessageType() const;

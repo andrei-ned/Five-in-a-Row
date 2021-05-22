@@ -11,7 +11,7 @@ Connection::Connection(SOCKET s) :
 Connection::~Connection()
 {
 	closesocket(mSocket);
-	WSACleanup();
+	//WSACleanup();
 	mConnectionActive = false;
 	mSendThread.join();
 	mRecvThread.join();
@@ -27,7 +27,7 @@ void Connection::sendMessage(Message msg)
 {
 	mSendMtx.lock();
 	mSendQueue.push(msg);
-	std::cout << "added msg to queue: " << msg.getBuffer() << "\n";
+	std::cout << this << ": added msg to queue: " << msg.getBuffer() << "\n";
 	mSendMtx.unlock();
 }
 
@@ -52,6 +52,8 @@ Message Connection::popRecvQueue()
 
 void Connection::sendMessages()
 {
+	std::cout << this << ": Started send thread" << "\n";
+
 	const char* buffer;
 	int result;
 
@@ -64,9 +66,8 @@ void Connection::sendMessages()
 		{
 			mSendMtx.lock();
 			buffer = mSendQueue.front().getBuffer();
-			mSendQueue.pop();
-			std::cout << "popped from send queue: " << buffer << "\n";
 			mSendMtx.unlock();
+			std::cout << this << ": popped from send queue: " << buffer << "\n";
 
 
 			result = send(mSocket, buffer, (int)strlen(buffer) + 1, 0);
@@ -74,14 +75,20 @@ void Connection::sendMessages()
 			if (result == SOCKET_ERROR)
 			{
 				std::cout << "send() failed with error: " << WSAGetLastError() << "\n";
-				mConnectionActive = false;
+				dropConnection();
 			}
+
+			mSendMtx.lock();
+			mSendQueue.pop();
+			mSendMtx.unlock();
 		}
 	}
 }
 
 void Connection::recvMessages()
 {
+	//std::cout << this << "Started recv thread" << "\n";
+
 	int result;
 	char buffer[Message::sBufferSize];
 
@@ -97,7 +104,7 @@ void Connection::recvMessages()
 			char* p = buffer;
 			do
 			{
-				unsigned int len = strlen(p) + 1;
+				int len = static_cast<int>(strlen(p)) + 1;
 				mRecvQueue.push(p);
 				printf("Received msg of %d bytes: %s\n", len, p);
 				result -= len;
@@ -108,25 +115,26 @@ void Connection::recvMessages()
 		else if (result == 0)
 		{
 			printf("Connection closing...\n");
-			mConnectionActive = false;
+			dropConnection();
 		}
 		else
 		{
 			printf("recv() failed with error: %d\n", WSAGetLastError());
-			mConnectionActive = false;
+			dropConnection();
 		}
 	}
 }
 
 void Connection::dropConnection()
 {
-	dropConnMtx.lock();
-	if (!mConnectionActive)
+	
+	if (mConnectionActive)
 	{
-		dropConnMtx.unlock();
-		return;
+		mConnectionActive = false;
+		//mOnConnectionLost();
+		if (mOnConnectionLost)
+		{
+			mOnConnectionLost();
+		}
 	}
-	mConnectionActive = false;
-	mOnConnectionLost();
-	dropConnMtx.unlock();
 }

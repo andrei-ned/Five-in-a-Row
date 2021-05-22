@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="..\Shared\Connection.cpp" />
     <ClCompile Include="..\Shared\Message.cpp" />
+    <ClCompile Include="..\Shared\PlayerMove.cpp" />
     <ClCompile Include="MainServer.cpp" />
     <ClCompile Include="Match.cpp" />
   </ItemGroup>
@@ -168,6 +169,7 @@
     <ClInclude Include="..\Shared\Connection.h" />
     <ClInclude Include="..\Shared\GameConstants.h" />
     <ClInclude Include="..\Shared\Message.h" />
+    <ClInclude Include="..\Shared\PlayerMove.h" />
     <ClInclude Include="Match.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -75,7 +75,7 @@ void Game::startConnection()
 {
 	if (!mCreateConnectionThread)
 	{
-		mConnectionFlag = true;
+		//mConnectionFlag = true;
 		mCreateConnectionThread = std::make_unique<std::thread>([=]() {
 			WSADATA wsaData;
 			int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -136,15 +136,16 @@ void Game::closeConnection()
 {
 	if (mCreateConnectionThread)
 	{
-		closesocket(mConnectSocket);
-		mConnectionFlag = false;
+		//mConnectionFlag = false;
 		mCreateConnectionThread->join();
+		closesocket(mConnectSocket);
 		mCreateConnectionThread.reset();
 	}
 	if (mConnection)
 	{
 		mConnection.reset();
 	}
+	WSACleanup();
 }
 
 void Game::failedConnection()

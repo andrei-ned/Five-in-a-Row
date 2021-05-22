@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="..\Shared\Connection.cpp" />
     <ClCompile Include="..\Shared\Message.cpp" />
+    <ClCompile Include="..\Shared\PlayerMove.cpp" />
     <ClCompile Include="ButtonGO.cpp" />
     <ClCompile Include="ConnectingState.cpp" />
     <ClCompile Include="ConnectionLostState.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="..\Shared\Connection.h" />
     <ClInclude Include="..\Shared\GameConstants.h" />
     <ClInclude Include="..\Shared\Message.h" />
+    <ClInclude Include="..\Shared\PlayerMove.h" />
     <ClInclude Include="ButtonGO.h" />
     <ClInclude Include="ConnectingState.h" />
     <ClInclude Include="ConnectionLostState.h" />

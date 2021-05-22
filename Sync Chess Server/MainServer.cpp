@@ -77,6 +77,19 @@ int main()
 		}
 		printf("Started new connection\n");
 
+		// Clear waiting connection if inactive
+		if (connectionWaitingForMatch)
+		{
+			if (!connectionWaitingForMatch->isActive())
+			{
+				connectionWaitingForMatch.reset();
+			}
+		}
+
+		matches.remove_if([](const std::unique_ptr<Match>& m) {
+			return !m->isActive();
+		});
+
 		if (connectionWaitingForMatch)
 		{
 			matches.push_back(std::make_unique<Match>(std::move(connectionWaitingForMatch), std::make_unique<Connection>(client_socket)));
@@ -85,10 +98,6 @@ int main()
 		{
 			connectionWaitingForMatch = std::make_unique<Connection>(client_socket);
 		}
-		//auto conn = std::make_unique<Connection>(client_socket);
-		//connections.push_back(std::move(conn));
-		////conn->mOnConnectionLost 
-		//connections.
 	}
 
 	return 0;

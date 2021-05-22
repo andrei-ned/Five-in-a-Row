@@ -12,6 +12,12 @@ Message::Message(MessageType type)
 	mBuffer[1] = 0;
 }
 
+Message::Message(MessageType type, const char* msgContent)
+{
+	mBuffer[0] = static_cast<char>(type);
+	strcpy_s((mBuffer + 1), sBufferSize - 1, msgContent);
+}
+
 const char* Message::getBuffer() const
 {
 	return mBuffer;

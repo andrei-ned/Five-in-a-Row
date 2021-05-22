@@ -53,7 +53,7 @@ private:
 	std::mutex mStateMutex;
 
 	std::unique_ptr<std::thread> mCreateConnectionThread;
-	std::atomic<bool> mConnectionFlag;
+	//std::atomic<bool> mConnectionFlag;
 
 	SOCKET mConnectSocket;
 

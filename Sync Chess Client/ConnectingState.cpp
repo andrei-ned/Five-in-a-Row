@@ -36,6 +36,11 @@ ConnectingState::ConnectingState(Game& game) : GameStateBase(game)
 void ConnectingState::updateText(std::string s, bool useDots)
 {
 	mTextMtx.lock();
+	if (!mpText)
+	{
+		mTextMtx.unlock();
+		return;
+	}
 	mTextString = s;
 	mpText->mText.setString(s);
 	float txtX = (Constants::windowWidth - mpText->mText.getGlobalBounds().width) * 0.5f;
@@ -78,9 +83,4 @@ void ConnectingState::update(const sf::Time& deltaTime)
 		mpText->mText.setString(mTextString + dotsString);
 		mTextMtx.unlock();
 	}
-}
-
-void ConnectingState::render(sf::RenderWindow& window)
-{
-	GameStateBase::render(window);
 }
