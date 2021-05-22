@@ -13,7 +13,7 @@ PreConnectionState::PreConnectionState(Game& game) : GameStateBase(game)
 
 	// ip input field (TODO)
 	mIpText.mText.setFont(mpGame->getFont());
-	mIpText.mText.setPosition(btnX, 100.0f);
+	mIpText.mText.setPosition(btnX, 100.0f); // <- change the x
 	mIpText.mText.setString("localhost:8888");
 
 	// Find match Button

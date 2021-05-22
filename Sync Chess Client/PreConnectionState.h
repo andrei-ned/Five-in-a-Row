@@ -12,6 +12,6 @@ public:
 	void render(sf::RenderWindow& window) override;
 	void textEvent(const unsigned int unicode) override;
 private:
-	TextGO mIpText;
+	TextGO mIpText; // <- change this to pointer, add to game object instead
 };
 

@@ -3,6 +3,7 @@
 
 class OpponentDisconnectState : public GameStateBase
 {
-	OpponentDisconnectState(&Game);
+public:
+	OpponentDisconnectState(Game&);
 };
 
