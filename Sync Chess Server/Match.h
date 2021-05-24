@@ -15,5 +15,8 @@ private:
 	std::thread mMatchThread;
 	std::atomic<bool> mMatchActive;
 	char mGameBoard[GameConstants::boardWidth][GameConstants::boardHeight];
+
+	void runMatch();
+	void handlePlayerMessages(Connection* player, Connection* otherPlayer);
 };
 

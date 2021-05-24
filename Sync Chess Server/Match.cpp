@@ -18,28 +18,7 @@ Match::Match(std::unique_ptr<Connection> c1, std::unique_ptr<Connection> c2) :
 	};
 
 	mMatchActive = true;
-	mMatchThread = std::thread([=]() {
-		while (mMatchActive)
-		{
-			while (mP1Connection->hasRecvMessages())
-			{
-				Message m = mP1Connection->popRecvQueue();
-				switch (m.getMessageType())
-				{
-				case MessageType::PlayerMove:
-				{
-					PlayerMove move(m);
-					mGameBoard[move.getX()][move.getY()] = 'O';
-					mP2Connection->sendMessage(Message(MessageType::PlayerMove, move.getContent()));
-					break;
-				}
-				case MessageType::OpponentDisconnect:
-					mP2Connection->sendMessage(Message(MessageType::OpponentDisconnect));
-					break;
-				}
-			}
-		}
-	});
+	mMatchThread = std::thread(&Match::runMatch, this);
 }
 
 Match::~Match()
@@ -51,4 +30,34 @@ Match::~Match()
 bool Match::isActive() const
 {
 	return mP1Connection->isActive() && mP2Connection->isActive();
+}
+
+void Match::runMatch()
+{
+	while (mMatchActive)
+	{
+		handlePlayerMessages(mP1Connection.get(), mP2Connection.get());
+		handlePlayerMessages(mP2Connection.get(), mP1Connection.get());
+	}
+}
+
+void Match::handlePlayerMessages(Connection* player, Connection* otherPlayer)
+{
+	while (player->hasRecvMessages())
+	{
+		Message m = player->popRecvQueue();
+		switch (m.getMessageType())
+		{
+		case MessageType::PlayerMove:
+		{
+			PlayerMove move(m);
+			mGameBoard[move.getX()][move.getY()] = 'O';
+			otherPlayer->sendMessage(Message(MessageType::PlayerMove, move.getContent()));
+			break;
+		}
+		case MessageType::OpponentDisconnect:
+			otherPlayer->sendMessage(Message(MessageType::OpponentDisconnect));
+			break;
+		}
+	}
 }
