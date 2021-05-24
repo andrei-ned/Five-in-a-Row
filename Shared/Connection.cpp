@@ -27,7 +27,7 @@ void Connection::sendMessage(Message msg)
 {
 	mSendMtx.lock();
 	mSendQueue.push(msg);
-	std::cout << this << ": added msg to queue: " << msg.getBuffer() << "\n";
+	//std::cout << this << ": added msg to queue: " << msg.getBuffer() << "\n";
 	mSendMtx.unlock();
 }
 
@@ -67,11 +67,13 @@ void Connection::sendMessages()
 			mSendMtx.lock();
 			buffer = mSendQueue.front().getBuffer();
 			mSendMtx.unlock();
-			std::cout << this << ": popped from send queue: " << buffer << "\n";
-
 
 			result = send(mSocket, buffer, (int)strlen(buffer) + 1, 0);
-			printf("send() result: %d\n", result);
+
+			std::cout << this << ": send message: ";
+			for (int i = 0; i < result; i++)
+				std::cout << (int)buffer[i] << " ";
+			std::cout << ", result: " << result <<"\n";
 			if (result == SOCKET_ERROR)
 			{
 				std::cout << "send() failed with error: " << WSAGetLastError() << "\n";
@@ -106,7 +108,10 @@ void Connection::recvMessages()
 			{
 				int len = static_cast<int>(strlen(p)) + 1;
 				mRecvQueue.push(p);
-				printf("Received msg of %d bytes: %s\n", len, p);
+				std::cout << "Received msg of " << len << " bytes: ";
+				for (int i = 0; i < len; i++)
+					std::cout << p[i] << " ";
+				std::cout << "\n";
 				result -= len;
 				p += len;
 			} while (result > 0);

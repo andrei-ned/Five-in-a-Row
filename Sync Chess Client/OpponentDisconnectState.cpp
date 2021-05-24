@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Constants.h"
 #include "TextGO.h"
-#include "PreConnectionState.h"
+#include "MenuState.h"
 
 OpponentDisconnectState::OpponentDisconnectState(Game& game) : GameStateBase(game) 
 {
@@ -17,8 +17,8 @@ OpponentDisconnectState::OpponentDisconnectState(Game& game) : GameStateBase(gam
 	btnBack->setSize(btnSize);
 	btnBack->setTextFont(mpGame->getFont());
 	btnBack->setPosition({ btnX,300.0f });
-	btnBack->setTextString("Back");
-	btnBack->mOnClick = [=]() { mpGame->changeState<PreConnectionState>(); };
+	btnBack->setTextString("OK");
+	btnBack->mOnClick = [=]() { mpGame->changeState<MenuState>(); };
 	mGameObjects.push_back(std::move(btnBack));
 
 	// Text

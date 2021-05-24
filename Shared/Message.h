@@ -2,9 +2,9 @@
 
 enum class MessageType : char {
 	None = 0,
-	MatchStart = 'A',
-	PlayerMove = 'B',
-	OpponentDisconnect = 'C'
+	MatchStart = 1,
+	PlayerMove = 2,
+	OpponentDisconnect = 3
 };
 
 class Message
