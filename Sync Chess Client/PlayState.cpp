@@ -27,13 +27,15 @@ PlayState::PlayState(Game& game) : GameStateBase(game)
 			});
 			btnBoard->setSize(btnSize);
 			btnBoard->setTextFont(mpGame->getFont());
+			btnBoard->setTextSize(60);
+			btnBoard->mTextOffset = { -4.0f , -28.0f };
 			btnBoard->setOutlineWidth(border);
 			btnBoard->setPosition({ (btnSize.x + border * 2.0f) * (x + 1), (btnSize.y + border * 2.0f) * (y + 1) });
 			btnBoard->mOnClick = [=]() { 
 				std::cout << "clicked " << x << ", " << y << "\n"; 
 				PlayerMove move(x, y);
 				mpGame->mConnection->sendMessage(Message(MessageType::PlayerMove, move.getContent()));
-				mBoard[x][y]->setTextString("X");
+				mBoard[x][y]->setTextString("x");
 			};
 			//btnBoard->setTextString(((x + y) % 2 == 0) ? "x" : "o");
 			mGameObjects.push_back(std::move(btnBoard));
@@ -53,7 +55,7 @@ void PlayState::update(const sf::Time& deltaTime)
 			case MessageType::PlayerMove:
 			{
 				PlayerMove move(m);
-				mBoard[move.getX()][move.getY()]->setTextString("O");
+				mBoard[move.getX()][move.getY()]->setTextString("o");
 				break;
 			}
 			case MessageType::OpponentDisconnect:

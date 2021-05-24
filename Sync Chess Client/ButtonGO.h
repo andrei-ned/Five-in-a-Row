@@ -10,11 +10,12 @@ public:
 		sf::Color normal, hovered, pressed, outline;
 	};
 
+	ButtonGO();
+
 	std::function<void()> mOnClick;
-	float textYOffset = -5.0f;
+	sf::Vector2f mTextOffset;
 
 	// GameObject
-	virtual void update(const sf::Time& deltaTime) override;
 	virtual void render(sf::RenderWindow& window) override;
 
 	void enable(const bool);

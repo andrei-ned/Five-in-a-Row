@@ -100,7 +100,7 @@ void Connection::recvMessages()
 		printf("recv() result: %d\n", result);
 		if (result > 0)
 		{
-			printf("Received %d bytes\n", result);
+			//printf("Received %d bytes\n", result);
 
 			mRecvMtx.lock();
 			char* p = buffer;
@@ -110,7 +110,7 @@ void Connection::recvMessages()
 				mRecvQueue.push(p);
 				std::cout << "Received msg of " << len << " bytes: ";
 				for (int i = 0; i < len; i++)
-					std::cout << p[i] << " ";
+					std::cout << (int)p[i] << " ";
 				std::cout << "\n";
 				result -= len;
 				p += len;

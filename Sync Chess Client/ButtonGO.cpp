@@ -2,10 +2,7 @@
 #include "SFML/Window.hpp"
 #include <iostream>
 
-void ButtonGO::update(const sf::Time& deltaTime)
-{
-
-}
+ButtonGO::ButtonGO() : mTextOffset({ 0.0f,-5.0f }) {}
 
 void ButtonGO::render(sf::RenderWindow& window)
 {
@@ -52,6 +49,7 @@ void ButtonGO::render(sf::RenderWindow& window)
 	}
 
 	window.draw(mRectShape);
+	window.draw(temp);
 	window.draw(mText);
 }
 
@@ -113,8 +111,8 @@ void ButtonGO::repositionText()
 	auto textRect = mText.getGlobalBounds();
 	auto shapeRect = mRectShape.getGlobalBounds();
 
-	float x = shapeRect.left + (shapeRect.width - textRect.width) * 0.5f;
-	float y = shapeRect.top + (shapeRect.height - mText.getCharacterSize()) * 0.5f + textYOffset;
+	float x = shapeRect.left + (shapeRect.width - textRect.width) * 0.5f + mTextOffset.x;
+	float y = shapeRect.top + (shapeRect.height - textRect.height) * 0.5f + mTextOffset.y;
 
 	mText.setPosition({ x,y });
 }
