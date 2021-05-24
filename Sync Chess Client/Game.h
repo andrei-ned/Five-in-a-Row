@@ -17,14 +17,14 @@
 class Game
 {
 public:
-	Game();
+	Game(sf::RenderWindow&);
 	~Game();
 
 	/// <summary> Game logic happens in here, should be called every frame </summary>
 	/// <param name="deltaTime"> Time since last frame </param>
 	void update(const sf::Time& deltaTime);
 	// Draw things on screen, should be called every frame
-	void render(sf::RenderWindow& window);
+	void render();
 
 	void textEvent(const unsigned int unicode);
 
@@ -33,12 +33,16 @@ public:
 	void startConnection();
 	void closeConnection();
 
+	void resizeWindow(const sf::Vector2u&);
+
 	// Change current state to T, create it if it doesn't exist
 	template <class T>
 	void changeState();
 
 	std::unique_ptr<Connection> mConnection;
 private:
+	sf::RenderWindow* mpWindow;
+
 	// Buttons
 	ButtonGO mTestButton;
 

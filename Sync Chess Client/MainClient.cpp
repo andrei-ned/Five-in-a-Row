@@ -4,10 +4,10 @@
 
 int main()
 {
-	Game game;
 	sf::RenderWindow window;
-
 	window.create(sf::VideoMode(Constants::windowWidth, Constants::windowHeight), "Title", sf::Style::Titlebar | sf::Style::Close);
+
+	Game game(window);
 
 	// Start the game loop 
 	sf::Clock clock;
@@ -30,7 +30,7 @@ int main()
 		window.clear(Constants::bgColor);
 
 		game.update(clock.restart());
-		game.render(window);
+		game.render();
 
 		// Update the window
 		window.display();

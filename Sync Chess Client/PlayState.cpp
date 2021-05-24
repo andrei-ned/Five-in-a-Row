@@ -4,6 +4,7 @@
 #include <iostream>
 #include "PlayerMove.h"
 #include "OpponentDisconnectState.h"
+#include "Constants.h"
 
 PlayState::PlayState(Game& game) : GameStateBase(game)
 {
@@ -61,4 +62,16 @@ void PlayState::update(const sf::Time& deltaTime)
 			}
 		}
 	}
+}
+
+void PlayState::enter()
+{
+	using namespace Constants;
+	mpGame->resizeWindow({ playWindowWidth, playWindowHeight });
+}
+
+void PlayState::exit()
+{
+	using namespace Constants;
+	mpGame->resizeWindow({ windowWidth, windowHeight });
 }

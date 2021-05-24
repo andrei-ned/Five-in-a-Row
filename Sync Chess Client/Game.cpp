@@ -7,7 +7,7 @@
 #include <ws2tcpip.h>
 #include "ConnectingState.h"
 
-Game::Game() /*: testThread(&Game::testFunc, this)*/ {
+Game::Game(sf::RenderWindow& window) : mpWindow(&window) {
 	// Load assets
 	if (!mBoardTexture.loadFromFile(Constants::assetPath + "Board.png"))
 	{
@@ -44,7 +44,7 @@ void Game::update(const sf::Time& deltaTime)
 	}
 }
 
-void Game::render(sf::RenderWindow& window) 
+void Game::render() 
 {
 	//for (auto drawable : mDrawables)
 	//{
@@ -59,7 +59,7 @@ void Game::render(sf::RenderWindow& window)
 
 	if (mpCurrentState)
 	{
-		mpCurrentState->render(window);
+		mpCurrentState->render(*mpWindow);
 	}
 }
 
@@ -146,6 +146,13 @@ void Game::closeConnection()
 		mConnection.reset();
 	}
 	WSACleanup();
+}
+
+void Game::resizeWindow(const sf::Vector2u& size)
+{
+	mpWindow->setSize(size);
+	sf::FloatRect rect(0, 0, static_cast<float>(size.x), static_cast<float>(size.y));
+	mpWindow->setView(sf::View(rect));
 }
 
 void Game::failedConnection()

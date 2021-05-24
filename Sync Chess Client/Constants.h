@@ -6,8 +6,10 @@
 namespace Constants {
 	const std::string assetPath = "../Assets/";
 
-	const unsigned int windowWidth = 1200;
-	const unsigned int windowHeight = 735;
+	const unsigned int windowWidth = 600;
+	const unsigned int windowHeight = 600;
+	const unsigned int playWindowWidth = 1200;
+	const unsigned int playWindowHeight = 735;
 
 	const sf::Color bgColor(0x13, 0x22, 0x2a);
 	const ButtonGO::ButtonColors btnColors{

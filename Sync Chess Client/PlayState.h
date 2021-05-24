@@ -9,6 +9,8 @@ public:
 	PlayState(Game&);
 
 	void update(const sf::Time& deltaTime) override;
+	void enter() override;
+	void exit() override;
 private:
 	ButtonGO* mBoard[GameConstants::boardWidth][GameConstants::boardHeight];
 };
