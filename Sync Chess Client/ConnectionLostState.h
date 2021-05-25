@@ -3,6 +3,7 @@
 
 class ConnectionLostState : public GameStateBase
 {
-	ConnectionLostState(&Game);
+public:
+	ConnectionLostState(Game&);
 };
 

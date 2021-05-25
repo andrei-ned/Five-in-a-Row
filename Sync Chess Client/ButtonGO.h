@@ -30,6 +30,7 @@ public:
 	void setTextString(const sf::String&);
 	void setTextColor(const sf::Color&);
 	void setTextSize(const unsigned int);
+	bool hasText();
 private:
 	enum class ButtonState { Default, Hovered, Pressed } mState = ButtonState::Default;
 	ButtonColors mColors;

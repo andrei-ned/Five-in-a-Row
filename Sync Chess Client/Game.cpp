@@ -6,6 +6,7 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include "ConnectingState.h"
+#include "ConnectionLostState.h"
 
 Game::Game(sf::RenderWindow& window) : mpWindow(&window) {
 	// Load assets
@@ -125,6 +126,7 @@ void Game::startConnection()
 			}
 
 			mConnection = std::make_unique<Connection>(mConnectSocket);
+			mConnection->mOnConnectionLost = [=]() { changeState<ConnectionLostState>(); };
 			auto connState = dynamic_cast<ConnectingState*>(mpCurrentState);
 			connState->updateText("Waiting for opponent");
 			return 0;

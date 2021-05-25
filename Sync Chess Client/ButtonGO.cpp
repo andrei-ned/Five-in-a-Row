@@ -49,7 +49,6 @@ void ButtonGO::render(sf::RenderWindow& window)
 	}
 
 	window.draw(mRectShape);
-	window.draw(temp);
 	window.draw(mText);
 }
 
@@ -115,4 +114,9 @@ void ButtonGO::repositionText()
 	float y = shapeRect.top + (shapeRect.height - textRect.height) * 0.5f + mTextOffset.y;
 
 	mText.setPosition({ x,y });
+}
+
+bool ButtonGO::hasText()
+{
+	return !mText.getString().isEmpty();
 }

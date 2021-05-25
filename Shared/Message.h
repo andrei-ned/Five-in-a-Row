@@ -4,7 +4,10 @@ enum class MessageType : char {
 	None = 0,
 	MatchStart = 1,
 	PlayerMove = 2,
-	OpponentDisconnect = 3
+	OpponentDisconnect = 3,
+	YouWon = 4,
+	OpponentWon = 5,
+	Rematch = 6
 };
 
 class Message
