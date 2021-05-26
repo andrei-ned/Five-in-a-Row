@@ -40,13 +40,10 @@ PlayState::PlayState(Game& game) : GameStateBase(game), boardCellSize(33.0f, 33.
 				enableBoard(false);
 				updateStatusText("Opponent's turn");
 			};
-			//btnBoard->setTextString(((x + y) % 2 == 0) ? "x" : "o");
 			mGameObjects.push_back(std::move(btnBoard));
 		}
 	}
 
-	//float boardSizeX = (boardCellSize.x + border * 2.0f) * (boardWidth + 1);
-	//float btnX = boardSizeX + (playWindowWidth - boardSizeX - btnSize.x) * 0.5f;
 	float btnX = getUIElementX(btnSize.x);
 
 	// Leave Button

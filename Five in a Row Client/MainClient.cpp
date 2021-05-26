@@ -2,7 +2,11 @@
 #include "Game.h"
 #include "SFML/Graphics.hpp"
 
+#ifdef _DEBUG
 int main()
+#else
+int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpszArgument, int nCmdShow)
+#endif
 {
 	sf::RenderWindow window;
 	window.create(sf::VideoMode(Constants::windowWidth, Constants::windowHeight), "Five in a Row", sf::Style::Titlebar | sf::Style::Close);

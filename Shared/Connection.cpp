@@ -26,7 +26,6 @@ void Connection::sendMessage(Message msg)
 {
 	mSendMtx.lock();
 	mSendQueue.push(msg);
-	//std::cout << this << ": added msg to queue: " << msg.getBuffer() << "\n";
 	mSendMtx.unlock();
 }
 
@@ -88,8 +87,6 @@ void Connection::sendMessages()
 
 void Connection::recvMessages()
 {
-	//std::cout << this << "Started recv thread" << "\n";
-
 	int result;
 	char buffer[Message::sBufferSize];
 
@@ -99,8 +96,6 @@ void Connection::recvMessages()
 		printf("recv() result: %d\n", result);
 		if (result > 0)
 		{
-			//printf("Received %d bytes\n", result);
-
 			mRecvMtx.lock();
 			char* p = buffer;
 			do

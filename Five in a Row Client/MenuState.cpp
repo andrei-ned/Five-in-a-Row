@@ -11,7 +11,6 @@ MenuState::MenuState(Game& game) : GameStateBase(game)
 
 	// Title text
 	auto txt = std::make_unique<TextGO>();
-
 	txt->mText.setFont(mpGame->getFont());
 	txt->mText.setString("Five in a Row");
 	txt->mText.setCharacterSize(52);

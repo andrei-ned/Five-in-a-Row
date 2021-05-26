@@ -1,6 +1,7 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 
+// Base GameObject that other game objects inherit from
 class GameObject
 {
 public:

@@ -12,10 +12,13 @@ PreConnectionState::PreConnectionState(Game& game) : GameStateBase(game)
 	// Button settings
 	float btnX = (Constants::windowWidth - btnSize.x) * 0.5f;
 
-	mIpText.mText.setFont(mpGame->getFont());
-	mIpText.mText.setString("localhost:" + GameConstants::defaultPort);
-	float txtX = (Constants::windowWidth - mIpText.mText.getGlobalBounds().width) * 0.5f;
-	mIpText.mText.setPosition({ txtX, 100.0f });
+	auto ipTxt = std::make_unique<TextGO>();
+	mpIpText = ipTxt.get();
+	ipTxt->mText.setFont(mpGame->getFont());
+	ipTxt->mText.setString("localhost:" + GameConstants::defaultPort);
+	float txtX = (Constants::windowWidth - ipTxt->mText.getGlobalBounds().width) * 0.5f;
+	ipTxt->mText.setPosition({ txtX, 100.0f });
+	mGameObjects.push_back(std::move(ipTxt));
 
 	// Find match Button
 	auto btnPlay = std::make_unique<ButtonGO>();
@@ -55,7 +58,6 @@ void PreConnectionState::enter()
 void PreConnectionState::render(sf::RenderWindow& window)
 {
 	GameStateBase::render(window);
-	mIpText.render(window);
 }
 
 void PreConnectionState::update(const sf::Time& deltaTime)
@@ -63,11 +65,11 @@ void PreConnectionState::update(const sf::Time& deltaTime)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::V))
 	{
 		auto s = sf::Clipboard::getString();
-		mIpText.mText.setString(s);
+		mpIpText->mText.setString(s);
 		auto pos = s.find(":");
 		mpGame->mIp = s.substring(0, pos);
 		mpGame->mPort = pos == std::string::npos ? GameConstants::defaultPort : static_cast<std::string>(s.substring(pos+1));
-		float txtX = (Constants::windowWidth - mIpText.mText.getGlobalBounds().width) * 0.5f;
-		mIpText.mText.setPosition({ txtX, mIpText.mText.getPosition().y });
+		float txtX = (Constants::windowWidth - mpIpText->mText.getGlobalBounds().width) * 0.5f;
+		mpIpText->mText.setPosition({ txtX, mpIpText->mText.getPosition().y });
 	}
 }

@@ -23,7 +23,6 @@ Game::Game(sf::RenderWindow& window) : mpWindow(&window) {
 }
 
 Game::~Game() {
-	//testThread.join();
 	closeConnection();
 }
 
@@ -34,11 +33,6 @@ const sf::Font& Game::getFont() const
 
 void Game::update(const sf::Time& deltaTime) 
 {
-	//for (auto go : mGameObjects)
-	//{
-	//	go->update(deltaTime);
-	//}
-
 	if (mpCurrentState)
 	{
 		mpCurrentState->update(deltaTime);
@@ -47,17 +41,6 @@ void Game::update(const sf::Time& deltaTime)
 
 void Game::render() 
 {
-	//for (auto drawable : mDrawables)
-	//{
-	//	window.draw(*drawable);
-	//}
-
-	//for (auto go : mGameObjects)
-	//{
-	//	go->render(window);
-	//}
-	////window.draw(mBoardSprite);
-
 	if (mpCurrentState)
 	{
 		mpCurrentState->render(*mpWindow);
@@ -76,7 +59,6 @@ void Game::startConnection()
 {
 	if (!mCreateConnectionThread)
 	{
-		//mConnectionFlag = true;
 		mCreateConnectionThread = std::make_unique<std::thread>([=]() {
 			WSADATA wsaData;
 			int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -110,10 +92,6 @@ void Game::startConnection()
 				return -1;
 			}
 
-			//// Set socket to non-blocking mode
-			//u_long iMode = 1;
-			//result = ioctlsocket(connect_socket, FIONBIO, &iMode);
-
 			result = connect(mConnectSocket, info->ai_addr, (int)info->ai_addrlen);
 			freeaddrinfo(info);
 			if (result == SOCKET_ERROR)
@@ -138,9 +116,7 @@ void Game::closeConnection()
 {
 	if (mCreateConnectionThread)
 	{
-		//mConnectionFlag = false;
 		mCreateConnectionThread->join();
-		//closesocket(mConnectSocket);
 		mCreateConnectionThread.reset();
 	}
 	if (mConnection)
