@@ -71,6 +71,10 @@ PlayState::PlayState(Game& game) : GameStateBase(game), boardCellSize(33.0f, 33.
 	btnRematch->mOnClick = [=]() { 
 		mpGame->mConnection->sendMessage(Message(MessageType::Rematch)); 
 		updateStatusText("Waiting for opponent");
+		mpRematchBtn->enable(false);
+		mReadyForRematch = true;
+		if (mOpponentReadyForRematch)
+			initRound();
 	};
 	btnRematch->enable(false);
 	mGameObjects.push_back(std::move(btnRematch));
@@ -116,20 +120,24 @@ void PlayState::update(const sf::Time& deltaTime)
 			case MessageType::OpponentWon:
 				updateStatusText("Opponent won!");
 				mOpponentScore++;
-				updateScoreText();
+				endRound();
 				// TODO: Highlight the line
 				break;
 			case MessageType::YouWon:
 				updateStatusText("You won!");
 				mMyScore++;
+				endRound();
 				// TODO: Highlight the line
 				break;
 			case MessageType::Draw:
 				updateStatusText("Draw!");
+				endRound();
 				break;
 			case MessageType::Rematch:
 				updateStatusText("Opponent wants a rematch");
 				mOpponentReadyForRematch = true;
+				if (mReadyForRematch)
+					initRound();
 				break;
 			case MessageType::GiveTurn:
 				enableBoard(true);
@@ -207,9 +215,18 @@ void PlayState::updateStatusText(std::string s)
 void PlayState::initRound()
 {
 	mOpponentReadyForRematch = false;
+	mReadyForRematch = false;
 	updateStatusText("Opponent's turn");
 
 	resetBoard();
+	enableBoard(false);
+	mpRematchBtn->enable(false);
+}
+
+void PlayState::endRound()
+{
+	updateScoreText();
+	mpRematchBtn->enable(true);
 	enableBoard(false);
 }
 

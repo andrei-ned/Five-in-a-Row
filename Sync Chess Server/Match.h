@@ -17,6 +17,7 @@ private:
 	char mGameBoard[GameConstants::boardWidth][GameConstants::boardHeight];
 	int mLineScores[GameConstants::boardWidth][GameConstants::boardHeight];
 	bool mRematch1, mRematch2;
+	bool roundEnded;
 	Connection* mpStartingPlayer;
 	Connection* mpLastMovePlayer;
 

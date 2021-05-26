@@ -26,6 +26,7 @@ private:
 	unsigned int mOpponentScore;
 
 	bool mOpponentReadyForRematch;
+	bool mReadyForRematch;
 
 	void enableBoard(bool);
 	void resetBoard();
@@ -33,6 +34,7 @@ private:
 	void updateScoreText();
 	void updateStatusText(std::string);
 	void initRound();
+	void endRound();
 
 	float getUIElementX(float elementWidth);
 };

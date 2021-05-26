@@ -54,6 +54,7 @@ void Match::initRound()
 
 	mRematch1 = false;
 	mRematch2 = false;
+	roundEnded = false;
 
 	for (int y = 0; y < boardHeight; y++)
 	{
@@ -96,6 +97,11 @@ void Match::handlePlayerMessages(Connection* player, Connection* otherPlayer)
 		{
 		case MessageType::PlayerMove:
 		{
+			if (roundEnded)
+			{
+				printf("Received move after round end, ignoring\n");
+				break;
+			}
 			if (player == mpLastMovePlayer)
 			{
 				printf("Received move from the same player twice in a row, ignoring\n");
@@ -122,7 +128,7 @@ void Match::handlePlayerMessages(Connection* player, Connection* otherPlayer)
 			maxScore = std::max(calculateLineScores(-1, -1, symbol), maxScore);
 			maxScore = std::max(calculateLineScores(1, -1, symbol), maxScore);
 
-			if (maxScore >= 5)
+			if (maxScore >= winningLength)
 				won = true;
 
 			// Check if draw
@@ -141,11 +147,13 @@ void Match::handlePlayerMessages(Connection* player, Connection* otherPlayer)
 			{
 				player->sendMessage(Message(MessageType::YouWon));
 				otherPlayer->sendMessage(Message(MessageType::OpponentWon));
+				roundEnded = true;
 			}
 			else if (draw)
 			{
 				player->sendMessage(Message(MessageType::Draw));
 				otherPlayer->sendMessage(Message(MessageType::Draw));
+				roundEnded = true;
 			}
 			break;
 		}
