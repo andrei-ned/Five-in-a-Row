@@ -10,10 +10,6 @@
 
 Game::Game(sf::RenderWindow& window) : mpWindow(&window) {
 	// Load assets
-	if (!mBoardTexture.loadFromFile(Constants::assetPath + "Board.png"))
-	{
-		assert(false);
-	}
 	if (!mFont.loadFromFile(Constants::assetPath + "RobotoMono-VariableFont_wght.ttf"))
 	{
 		assert(false);

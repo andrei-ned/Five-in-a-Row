@@ -47,7 +47,6 @@ private:
 	ButtonGO mTestButton;
 
 	// Assets
-	sf::Texture mBoardTexture;
 	sf::Font mFont;
 
 	// Game States
