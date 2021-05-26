@@ -133,6 +133,11 @@ void Game::resizeWindow(const sf::Vector2u& size)
 	mpWindow->setView(sf::View(rect));
 }
 
+bool Game::isInFocus() const
+{
+	return mpWindow->hasFocus();
+}
+
 void Game::failedConnection()
 {
 	auto connState = dynamic_cast<ConnectingState*>(mpCurrentState);

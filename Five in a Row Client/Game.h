@@ -38,6 +38,8 @@ public:
 
 	void resizeWindow(const sf::Vector2u&);
 
+	bool isInFocus() const;
+
 	// Change current state to T, create it if it doesn't exist
 	template <class T>
 	void changeState();

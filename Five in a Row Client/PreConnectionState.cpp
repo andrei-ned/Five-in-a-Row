@@ -62,7 +62,7 @@ void PreConnectionState::render(sf::RenderWindow& window)
 
 void PreConnectionState::update(const sf::Time& deltaTime)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::V) && mpGame->isInFocus())
 	{
 		auto s = sf::Clipboard::getString();
 		mpIpText->mText.setString(s);
