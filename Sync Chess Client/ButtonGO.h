@@ -18,7 +18,8 @@ public:
 	// GameObject
 	virtual void render(sf::RenderWindow& window) override;
 
-	void enable(const bool);
+	void enable(bool);
+	void setInteractable(bool);
 
 	void setPosition(const sf::Vector2f&);
 	void setSize(const sf::Vector2f&);
@@ -35,6 +36,7 @@ private:
 	enum class ButtonState { Default, Hovered, Pressed } mState = ButtonState::Default;
 	ButtonColors mColors;
 	bool mIsEnabled = true;
+	bool mIsInteractable = true;
 	sf::RectangleShape mRectShape;
 	sf::Text mText;
 

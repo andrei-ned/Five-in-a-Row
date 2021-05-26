@@ -140,14 +140,14 @@ void Game::closeConnection()
 	{
 		//mConnectionFlag = false;
 		mCreateConnectionThread->join();
-		closesocket(mConnectSocket);
+		//closesocket(mConnectSocket);
 		mCreateConnectionThread.reset();
 	}
 	if (mConnection)
 	{
 		mConnection.reset();
+		WSACleanup();
 	}
-	WSACleanup();
 }
 
 void Game::resizeWindow(const sf::Vector2u& size)

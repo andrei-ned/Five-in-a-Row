@@ -15,8 +15,16 @@ private:
 	std::thread mMatchThread;
 	std::atomic<bool> mMatchActive;
 	char mGameBoard[GameConstants::boardWidth][GameConstants::boardHeight];
+	int mLineScores[GameConstants::boardWidth][GameConstants::boardHeight];
+	bool mRematch1, mRematch2;
+	Connection* mpStartingPlayer;
+	Connection* mpLastMovePlayer;
 
+	void initRound();
 	void runMatch();
 	void handlePlayerMessages(Connection* player, Connection* otherPlayer);
+	int calculateLineScores(int, int, char);
+
+	void printBoard() const;
 };
 

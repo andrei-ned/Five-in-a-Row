@@ -29,6 +29,10 @@ private:
 
 	void enableBoard(bool);
 	void resetBoard();
+	void placeOnBoard(unsigned int x, unsigned int y, bool isOpponent);
+	void updateScoreText();
+	void updateStatusText(std::string);
+	void initRound();
 
 	float getUIElementX(float elementWidth);
 };

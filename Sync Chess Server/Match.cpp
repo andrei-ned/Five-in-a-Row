@@ -1,5 +1,9 @@
 #include "Match.h"
 #include "PlayerMove.h"
+#include "GameConstants.h"
+#include <ctime>
+#include <iostream>
+#include <algorithm>
 
 Match::Match(std::unique_ptr<Connection> c1, std::unique_ptr<Connection> c2) : 
 	mP1Connection(std::move(c1)),
@@ -17,6 +21,18 @@ Match::Match(std::unique_ptr<Connection> c1, std::unique_ptr<Connection> c2) :
 		mMatchActive = false;
 	};
 
+	// Determine starting player
+	srand(static_cast<unsigned int>(time(NULL)));
+	if (rand() % 2)
+	{
+		mpStartingPlayer = mP1Connection.get();
+	}
+	else
+	{
+		mpStartingPlayer = mP2Connection.get();
+	}
+
+	initRound();
 	mMatchActive = true;
 	mMatchThread = std::thread(&Match::runMatch, this);
 }
@@ -32,6 +48,34 @@ bool Match::isActive() const
 	return mP1Connection->isActive() && mP2Connection->isActive();
 }
 
+void Match::initRound()
+{
+	using namespace GameConstants;
+
+	mRematch1 = false;
+	mRematch2 = false;
+
+	for (int y = 0; y < boardHeight; y++)
+	{
+		for (int x = 0; x < boardWidth; x++)
+		{
+			mGameBoard[x][y] = 0;
+		}
+	}
+
+	if (mpStartingPlayer == mP1Connection.get())
+	{
+		mpStartingPlayer = mP2Connection.get();
+	}
+	else
+	{
+		mpStartingPlayer = mP1Connection.get();
+	}
+
+	mpStartingPlayer->sendMessage(Message(MessageType::GiveTurn));
+	mpLastMovePlayer = nullptr;
+}
+
 void Match::runMatch()
 {
 	while (mMatchActive)
@@ -43,6 +87,8 @@ void Match::runMatch()
 
 void Match::handlePlayerMessages(Connection* player, Connection* otherPlayer)
 {
+	using namespace GameConstants;
+
 	while (player->hasRecvMessages())
 	{
 		Message m = player->popRecvQueue();
@@ -50,14 +96,105 @@ void Match::handlePlayerMessages(Connection* player, Connection* otherPlayer)
 		{
 		case MessageType::PlayerMove:
 		{
+			if (player == mpLastMovePlayer)
+			{
+				printf("Received move from the same player twice in a row, ignoring\n");
+				break;
+			}
 			PlayerMove move(m);
-			mGameBoard[move.getX()][move.getY()] = 'O';
+			if (mGameBoard[move.getX()][move.getY()] != 0)
+			{
+				printf("Received invalid move, ignoring\n");
+				break;
+			}
+			char symbol = player == mpStartingPlayer ? 'x' : 'o';
+			mGameBoard[move.getX()][move.getY()] = symbol;
 			otherPlayer->sendMessage(Message(MessageType::PlayerMove, move.getContent()));
+
+			// Check if won
+			bool won = false;
+			int maxScore = -1;
+			// Check for horizontal line
+			maxScore = std::max(calculateLineScores(-1, 0, symbol), maxScore);
+			// Check for vertical line
+			maxScore = std::max(calculateLineScores(0, -1, symbol), maxScore);
+			// Check for diagonal lines
+			maxScore = std::max(calculateLineScores(-1, -1, symbol), maxScore);
+			maxScore = std::max(calculateLineScores(1, -1, symbol), maxScore);
+
+			if (maxScore >= 5)
+				won = true;
+
+			// Check if draw
+			bool draw = true;
+			for (unsigned int y = 0; y < boardHeight; y++)
+			{
+				for (unsigned int x = 0; x < boardWidth; x++)
+				{
+					if (mGameBoard[x][y] == 0)
+						draw = false;
+				}
+			}
+
+			// Send message
+			if (won)
+			{
+				player->sendMessage(Message(MessageType::YouWon));
+				otherPlayer->sendMessage(Message(MessageType::OpponentWon));
+			}
+			else if (draw)
+			{
+				player->sendMessage(Message(MessageType::Draw));
+				otherPlayer->sendMessage(Message(MessageType::Draw));
+			}
 			break;
 		}
-		case MessageType::OpponentDisconnect:
-			otherPlayer->sendMessage(Message(MessageType::OpponentDisconnect));
+		case MessageType::Rematch:
+			otherPlayer->sendMessage(Message(MessageType::Rematch));
+			if (player == mpStartingPlayer)
+				mRematch1 = true;
+			else
+				mRematch2 = true;
+			if (mRematch1 && mRematch2)
+				initRound();
 			break;
 		}
+	}
+}
+
+int Match::calculateLineScores(int offsetX, int offsetY, char symbol)
+{
+	using namespace GameConstants;
+
+	int maxScore = -1;
+	for (unsigned int y = 0; y < boardHeight; y++)
+	{
+		for (unsigned int x = 0; x < boardWidth; x++)
+		{
+			int score = 0;
+			if (mGameBoard[x][y] == symbol)
+			{
+				score = 1;
+				if (x != 0 && x < boardWidth - 1 && y != 0 && y < boardHeight -1)
+					score = std::max(score, mLineScores[x + offsetX][y + offsetY] + 1);
+			}
+			mLineScores[x][y] = score;
+			maxScore = std::max(maxScore, score);
+		}
+	}
+	return maxScore;
+}
+
+void Match::printBoard() const
+{
+	using namespace GameConstants;
+
+	for (unsigned int y = 0; y < boardHeight; y++)
+	{
+		for (unsigned int x = 0; x < boardWidth; x++)
+		{
+			std::cout << (mGameBoard[x][y] == 0 ? '_' : mGameBoard[x][y]);
+		}
+		std::cout << "\n";
 	}
 }

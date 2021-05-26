@@ -7,7 +7,9 @@ enum class MessageType : char {
 	OpponentDisconnect = 3,
 	YouWon = 4,
 	OpponentWon = 5,
-	Rematch = 6
+	Draw = 6,
+	Rematch = 7,
+	GiveTurn = 8
 };
 
 class Message

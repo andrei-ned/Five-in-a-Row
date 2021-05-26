@@ -35,7 +35,9 @@ PlayState::PlayState(Game& game) : GameStateBase(game), boardCellSize(33.0f, 33.
 				std::cout << "clicked " << x << ", " << y << "\n"; 
 				PlayerMove move(x, y);
 				mpGame->mConnection->sendMessage(Message(MessageType::PlayerMove, move.getContent()));
-				mBoard[x][y]->setTextString("x");
+				placeOnBoard(x, y, false);
+				enableBoard(false);
+				updateStatusText("Opponent's turn");
 			};
 			//btnBoard->setTextString(((x + y) % 2 == 0) ? "x" : "o");
 			mGameObjects.push_back(std::move(btnBoard));
@@ -66,18 +68,29 @@ PlayState::PlayState(Game& game) : GameStateBase(game), boardCellSize(33.0f, 33.
 	btnRematch->setTextFont(mpGame->getFont());
 	btnRematch->setPosition({ btnX, playWindowHeight - 35.0f - btnSize.y * 3 });
 	btnRematch->setTextString("Rematch");
-	btnRematch->mOnClick = [=]() { std::exit(EXIT_SUCCESS); };
+	btnRematch->mOnClick = [=]() { 
+		mpGame->mConnection->sendMessage(Message(MessageType::Rematch)); 
+		updateStatusText("Waiting for opponent");
+	};
+	btnRematch->enable(false);
 	mGameObjects.push_back(std::move(btnRematch));
 
 	// Status Text
 	auto statusTxt = std::make_unique<TextGO>();
 	mpStatusTxt = statusTxt.get();
+	statusTxt->mText.setFont(mpGame->getFont());
+	statusTxt->mText.setPosition({ 0.0f, 35.0f });
 	mGameObjects.push_back(std::move(statusTxt));
 
 	// Score Text
 	auto scoreText = std::make_unique<TextGO>();
 	mpScoreText = scoreText.get();
+	scoreText->mText.setFont(mpGame->getFont());
+	scoreText->mText.setPosition({ 0.0f, 100.0f });
+	updateScoreText();
 	mGameObjects.push_back(std::move(scoreText));
+
+	initRound();
 }
 
 void PlayState::update(const sf::Time& deltaTime)
@@ -92,11 +105,35 @@ void PlayState::update(const sf::Time& deltaTime)
 			case MessageType::PlayerMove:
 			{
 				PlayerMove move(m);
-				mBoard[move.getX()][move.getY()]->setTextString("o");
+				placeOnBoard(move.getX(), move.getY(), true);
+				enableBoard(true);
+				updateStatusText("Your turn");
 				break;
 			}
 			case MessageType::OpponentDisconnect:
 				mpGame->changeState<OpponentDisconnectState>();
+				return;
+			case MessageType::OpponentWon:
+				updateStatusText("Opponent won!");
+				mOpponentScore++;
+				updateScoreText();
+				// TODO: Highlight the line
+				break;
+			case MessageType::YouWon:
+				updateStatusText("You won!");
+				mMyScore++;
+				// TODO: Highlight the line
+				break;
+			case MessageType::Draw:
+				updateStatusText("Draw!");
+				break;
+			case MessageType::Rematch:
+				updateStatusText("Opponent wants a rematch");
+				mOpponentReadyForRematch = true;
+				break;
+			case MessageType::GiveTurn:
+				enableBoard(true);
+				updateStatusText("Your turn");
 				break;
 			}
 		}
@@ -107,12 +144,16 @@ void PlayState::enter()
 {
 	using namespace Constants;
 	mpGame->resizeWindow({ playWindowWidth, playWindowHeight });
+	mMyScore = 0;
+	mOpponentScore = 0;
+	initRound();
 }
 
 void PlayState::exit()
 {
 	using namespace Constants;
 	mpGame->resizeWindow({ windowWidth, windowHeight });
+	mpGame->closeConnection();
 }
 
 void PlayState::enableBoard(bool enabled)
@@ -123,8 +164,8 @@ void PlayState::enableBoard(bool enabled)
 	{
 		for (unsigned int x = 0; x < boardWidth; x++)
 		{
-			if (mBoard[x][y]->hasText())
-				mBoard[x][y]->enable(enabled);
+			if (!mBoard[x][y]->hasText())
+				mBoard[x][y]->setInteractable(enabled);
 		}
 	}
 }
@@ -140,6 +181,36 @@ void PlayState::resetBoard()
 			mBoard[x][y]->setTextString("");
 		}
 	}
+}
+
+void PlayState::placeOnBoard(unsigned int x, unsigned int y, bool isOpponent)
+{
+	mBoard[x][y]->setTextString(isOpponent ? "o" : "x");
+	mBoard[x][y]->setInteractable(false);
+}
+
+void PlayState::updateScoreText()
+{
+	std::string s = "You " + std::to_string(mMyScore) + " - " + std::to_string(mOpponentScore) + " Opponent";
+	mpScoreText->mText.setString(s);
+	float x = getUIElementX(mpScoreText->mText.getGlobalBounds().width);
+	mpScoreText->mText.setPosition({ x,mpScoreText->mText.getPosition().y });
+}
+
+void PlayState::updateStatusText(std::string s)
+{
+	mpStatusTxt->mText.setString(s);
+	float x = getUIElementX(mpStatusTxt->mText.getGlobalBounds().width);
+	mpStatusTxt->mText.setPosition({ x,mpStatusTxt->mText.getPosition().y });
+}
+
+void PlayState::initRound()
+{
+	mOpponentReadyForRematch = false;
+	updateStatusText("Opponent's turn");
+
+	resetBoard();
+	enableBoard(false);
 }
 
 float PlayState::getUIElementX(float elementWidth)

@@ -6,7 +6,10 @@ ButtonGO::ButtonGO() : mTextOffset({ 0.0f,-5.0f }) {}
 
 void ButtonGO::render(sf::RenderWindow& window)
 {
-	if (mIsEnabled)
+	if (!mIsEnabled)
+		return;
+
+	if (mIsInteractable)
 	{
 		bool contains = mRectShape.getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
 		bool click = sf::Mouse::isButtonPressed(sf::Mouse::Left);
@@ -52,10 +55,17 @@ void ButtonGO::render(sf::RenderWindow& window)
 	window.draw(mText);
 }
 
-void ButtonGO::enable(const bool enabled)
+void ButtonGO::enable(bool enabled)
 {
 	mState = ButtonState::Default;
 	mIsEnabled = enabled;
+}
+
+void ButtonGO::setInteractable(bool interact)
+{
+	mState = ButtonState::Default;
+	mRectShape.setFillColor(mColors.normal);
+	mIsInteractable = interact;
 }
 
 void ButtonGO::setPosition(const sf::Vector2f& pos)

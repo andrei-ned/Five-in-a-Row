@@ -11,7 +11,6 @@ Connection::Connection(SOCKET s) :
 Connection::~Connection()
 {
 	closesocket(mSocket);
-	//WSACleanup();
 	mConnectionActive = false;
 	mSendThread.join();
 	mRecvThread.join();
