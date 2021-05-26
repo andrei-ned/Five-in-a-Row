@@ -10,8 +10,14 @@ Connection::Connection(SOCKET s) :
 
 Connection::~Connection()
 {
-	closesocket(mSocket);
 	mConnectionActive = false;
+	u_long iMode = 1;
+	int result = ioctlsocket(mSocket, FIONBIO, &iMode);
+	if (result != NO_ERROR)
+	{
+		std::cout << "ioctlsocket failed with error " << result << "\n";
+	}
+	closesocket(mSocket);
 	mSendThread.join();
 	mRecvThread.join();
 }
