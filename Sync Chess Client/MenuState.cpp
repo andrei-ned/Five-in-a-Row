@@ -13,7 +13,7 @@ MenuState::MenuState(Game& game) : GameStateBase(game)
 	auto txt = std::make_unique<TextGO>();
 
 	txt->mText.setFont(mpGame->getFont());
-	txt->mText.setString("Title");
+	txt->mText.setString("Five in a Row");
 	txt->mText.setCharacterSize(52);
 	auto txtBounds = txt->mText.getGlobalBounds();
 	txt->mText.setPosition({ (Constants::windowWidth - txtBounds.width) * 0.5f, 50.0f });

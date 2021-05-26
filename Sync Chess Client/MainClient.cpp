@@ -5,7 +5,7 @@
 int main()
 {
 	sf::RenderWindow window;
-	window.create(sf::VideoMode(Constants::windowWidth, Constants::windowHeight), "Title", sf::Style::Titlebar | sf::Style::Close);
+	window.create(sf::VideoMode(Constants::windowWidth, Constants::windowHeight), "Five in a Row", sf::Style::Titlebar | sf::Style::Close);
 
 	Game game(window);
 

@@ -24,6 +24,7 @@
     <ProjectGuid>{95716c05-483b-4448-8f1b-ad14b3dde2a8}</ProjectGuid>
     <RootNamespace>SyncChessClient</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Five in a Row Client</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
