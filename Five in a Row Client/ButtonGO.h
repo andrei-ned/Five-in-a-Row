@@ -24,6 +24,7 @@ public:
 	void setPosition(const sf::Vector2f&);
 	void setSize(const sf::Vector2f&);
 	void setColors(const ButtonColors&);
+	void setNormalColor(const sf::Color&);
 	void setOutlineWidth(const float);
 
 	// Text
@@ -31,7 +32,8 @@ public:
 	void setTextString(const sf::String&);
 	void setTextColor(const sf::Color&);
 	void setTextSize(const unsigned int);
-	bool hasText();
+	std::string getText() const;
+	bool hasText() const;
 private:
 	enum class ButtonState { Default, Hovered, Pressed } mState = ButtonState::Default;
 	ButtonColors mColors;

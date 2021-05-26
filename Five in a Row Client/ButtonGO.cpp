@@ -12,7 +12,7 @@ void ButtonGO::render(sf::RenderWindow& window)
 	if (mIsInteractable)
 	{
 		bool contains = mRectShape.getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
-		bool click = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+		bool click = sf::Mouse::isButtonPressed(sf::Mouse::Left) && window.hasFocus();
 
 		switch (mState)
 		{
@@ -88,6 +88,12 @@ void ButtonGO::setColors(const ButtonColors& colors)
 	mRectShape.setOutlineColor(colors.outline);
 }
 
+void ButtonGO::setNormalColor(const sf::Color& color)
+{
+	mColors.normal = color;
+	mRectShape.setFillColor(mColors.normal);
+}
+
 void ButtonGO::setOutlineWidth(const float width)
 {
 	mRectShape.setOutlineThickness(width);
@@ -126,7 +132,12 @@ void ButtonGO::repositionText()
 	mText.setPosition({ x,y });
 }
 
-bool ButtonGO::hasText()
+std::string ButtonGO::getText() const
+{
+	return mText.getString();
+}
+
+bool ButtonGO::hasText() const
 {
 	return !mText.getString().isEmpty();
 }

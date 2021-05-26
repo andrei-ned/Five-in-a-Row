@@ -17,16 +17,14 @@ int main()
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			// Close window: exit
-			if (event.type == sf::Event::Closed)
-				window.close();
-			if (event.type == sf::Event::TextEntered)
+			switch (event.type)
 			{
-				std::cout << event.text.unicode << " - " << static_cast<char>(event.text.unicode) << std::endl;
+			case sf::Event::Closed:
+				window.close();
+				break;
 			}
 		}
 
-		// Clear screen
 		window.clear(Constants::bgColor);
 
 		game.update(clock.restart());

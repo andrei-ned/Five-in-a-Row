@@ -7,6 +7,7 @@
 #include <ws2tcpip.h>
 #include "ConnectingState.h"
 #include "ConnectionLostState.h"
+#include "GameConstants.h"
 
 Game::Game(sf::RenderWindow& window) : mpWindow(&window) {
 	// Load assets
@@ -16,6 +17,9 @@ Game::Game(sf::RenderWindow& window) : mpWindow(&window) {
 	}
 
 	changeState<MenuState>();
+
+	mIp = "localhost";
+	mPort = GameConstants::defaultPort;
 }
 
 Game::~Game() {
@@ -86,7 +90,7 @@ void Game::startConnection()
 
 			// Resolve server address and port
 			addrinfo* info;
-			result = getaddrinfo("localhost", "8888", &hints, &info);
+			result = getaddrinfo(mIp.c_str(), mPort.c_str(), &hints, &info);
 			if (result != 0)
 			{
 				printf("getaddrinfo() failed: %d\n", result);

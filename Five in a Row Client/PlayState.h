@@ -21,6 +21,7 @@ private:
 	TextGO* mpScoreText;
 	ButtonGO* mpRematchBtn;
 	ButtonGO* mBoard[GameConstants::boardWidth][GameConstants::boardHeight];
+	int mLineScores[GameConstants::boardWidth][GameConstants::boardHeight];
 
 	unsigned int mMyScore;
 	unsigned int mOpponentScore;
@@ -35,6 +36,8 @@ private:
 	void updateStatusText(std::string);
 	void initRound();
 	void endRound();
+	void highlightWinningLine(std::string symbol);
+	void highlightWinningLine(int offsetX, int offsetY, std::string symbol);
 
 	float getUIElementX(float elementWidth);
 };

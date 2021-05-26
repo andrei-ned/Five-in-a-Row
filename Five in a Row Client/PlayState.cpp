@@ -7,6 +7,7 @@
 #include "Constants.h"
 #include "MenuState.h"
 #include "TextGO.h"
+#include <algorithm>
 
 PlayState::PlayState(Game& game) : GameStateBase(game), boardCellSize(33.0f, 33.0f), border(1.0f)
 {
@@ -20,15 +21,15 @@ PlayState::PlayState(Game& game) : GameStateBase(game), boardCellSize(33.0f, 33.
 			auto btnBoard = std::make_unique<ButtonGO>();
 			mBoard[x][y] = btnBoard.get();
 			btnBoard->setColors({
-				sf::Color::Red,
-				sf::Color::Green,
-				sf::Color::Blue,
+				boardColor,
+				btnColors.hovered,
+				btnColors.pressed,
 				sf::Color::White
 			});
 			btnBoard->setSize(boardCellSize);
 			btnBoard->setTextFont(mpGame->getFont());
-			btnBoard->setTextSize(58);
-			btnBoard->mTextOffset = { -4.0f , -28.0f };
+			btnBoard->setTextSize(56);
+			btnBoard->mTextOffset = { -3.0f , -27.0f };
 			btnBoard->setOutlineWidth(border);
 			btnBoard->setPosition({ (boardCellSize.x + border * 2.0f) * (x + 1), (boardCellSize.y + border * 2.0f) * (y + 1) });
 			btnBoard->mOnClick = [=]() { 
@@ -121,13 +122,13 @@ void PlayState::update(const sf::Time& deltaTime)
 				updateStatusText("Opponent won!");
 				mOpponentScore++;
 				endRound();
-				// TODO: Highlight the line
+				highlightWinningLine("o");
 				break;
 			case MessageType::YouWon:
 				updateStatusText("You won!");
 				mMyScore++;
 				endRound();
-				// TODO: Highlight the line
+				highlightWinningLine("x");
 				break;
 			case MessageType::Draw:
 				updateStatusText("Draw!");
@@ -181,12 +182,14 @@ void PlayState::enableBoard(bool enabled)
 void PlayState::resetBoard()
 {
 	using namespace GameConstants;
+	using namespace Constants;
 
 	for (unsigned int y = 0; y < boardHeight; y++)
 	{
 		for (unsigned int x = 0; x < boardWidth; x++)
 		{
 			mBoard[x][y]->setTextString("");
+			mBoard[x][y]->setNormalColor(boardColor);
 		}
 	}
 }
@@ -194,6 +197,7 @@ void PlayState::resetBoard()
 void PlayState::placeOnBoard(unsigned int x, unsigned int y, bool isOpponent)
 {
 	mBoard[x][y]->setTextString(isOpponent ? "o" : "x");
+	mBoard[x][y]->setTextColor(isOpponent ? sf::Color(0x28, 0x92, 0xd7) : sf::Color(0xff, 0x81, 0x0a));
 	mBoard[x][y]->setInteractable(false);
 }
 
@@ -228,6 +232,48 @@ void PlayState::endRound()
 	updateScoreText();
 	mpRematchBtn->enable(true);
 	enableBoard(false);
+}
+
+void PlayState::highlightWinningLine(std::string symbol)
+{
+	// Check for horizontal line
+	highlightWinningLine(-1, 0, symbol);
+	// Check for vertical line
+	highlightWinningLine(0, -1, symbol);
+	// Check for diagonal lines
+	highlightWinningLine(-1, -1, symbol);
+	highlightWinningLine(1, -1, symbol);
+}
+
+void PlayState::highlightWinningLine(int offsetX, int offsetY, std::string symbol)
+{
+	using namespace GameConstants;
+	using namespace Constants;
+
+	for (unsigned int y = 0; y < boardHeight; y++)
+	{
+		for (unsigned int x = 0; x < boardWidth; x++)
+		{
+			int score = 0;
+			if (mBoard[x][y]->getText() == symbol)
+			{
+				score = 1;
+				if (x != 0 && x < boardWidth - 1 && y != 0 && y < boardHeight - 1)
+					score = std::max(score, mLineScores[x + offsetX][y + offsetY] + 1);
+			}
+			mLineScores[x][y] = score;
+			if (score >= winningLength)
+			{
+				int X = x, Y = y;
+				for (unsigned int i = 0; i < winningLength; i++)
+				{
+					mBoard[X][Y]->setNormalColor(btnColors.hovered);
+					X += offsetX;
+					Y += offsetY;
+				}
+			}
+		}
+	}
 }
 
 float PlayState::getUIElementX(float elementWidth)

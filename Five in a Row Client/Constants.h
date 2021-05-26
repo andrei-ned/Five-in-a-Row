@@ -17,6 +17,7 @@ namespace Constants {
 		sf::Color(0x5c,0x99,0x91),
 		sf::Color(0x48,0x6c,0x77),
 	};
+	const sf::Color boardColor(0x2e, 0x35, 0x32);
 
 	const sf::Vector2f btnSize(250.0f, 50.0f);
 }

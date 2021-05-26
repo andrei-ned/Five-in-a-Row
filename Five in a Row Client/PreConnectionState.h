@@ -10,7 +10,7 @@ public:
 
 	void enter() override;
 	void render(sf::RenderWindow& window) override;
-	void textEvent(const unsigned int unicode) override;
+	void update(const sf::Time& deltaTime) override;
 private:
 	TextGO mIpText; // <- change this to pointer, add to game object instead
 };

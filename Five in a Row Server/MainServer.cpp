@@ -7,6 +7,7 @@
 #include <vector>
 #include "Connection.h"
 #include "Match.h"
+#include "GameConstants.h"
 
 int main()
 {
@@ -23,7 +24,7 @@ int main()
 
 	// Resolve server local address and port
 	addrinfo* info;
-	result = getaddrinfo(nullptr, "8888", &hints, &info);
+	result = getaddrinfo(nullptr, GameConstants::defaultPort.c_str(), &hints, &info);
 	if (result != 0)
 	{
 		printf("getaddrinfo() failed: %d\n", result);

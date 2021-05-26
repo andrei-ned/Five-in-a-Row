@@ -20,6 +20,9 @@ public:
 	Game(sf::RenderWindow&);
 	~Game();
 
+	std::string mIp;
+	std::string mPort;
+
 	/// <summary> Game logic happens in here, should be called every frame </summary>
 	/// <param name="deltaTime"> Time since last frame </param>
 	void update(const sf::Time& deltaTime);
